@@ -7,7 +7,39 @@
 </head>
 <body>
 
-  <%- body %>
+  <!-- Barra de Navegação --> 
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">📚 Portal de Histórias</div>
+      <nav class="site-nav">
+        <a href="/">Início</a>
+        <a href="/profile">Perfil</a>
+        <a href="/login">Login</a>
+        <a href="/categorias">Categorias</a>
+      </nav>
+    </div>
+  </header>
+
+  <%- body %> <!-- Conteúdo das outras views -->
+
+  <!-- Rodapé -->
+  <footer class="site-footer">
+    <div class="social-footer">
+      <a href="https://facebook.com/" target="_blank">
+        <img src="icons/facebook.svg" alt="Facebook">
+      </a>
+      <a href="https://instagram.com/" target="_blank">
+        <img src="icons/instagram.svg" alt="Instagram">
+      </a>
+      <a href="https://twitter.com/" target="_blank">
+        <img src="icons/twitter.svg" alt="Twitter/X">
+      </a>
+      <!--a href="https://linkedin.com/in/suaPagina" target="_blank">
+        <img src="icons/linkedin.svg" alt="LinkedIn">
+      </a-->
+    </div>
+    <p>&copy; 2025 Portal de Histórias. Todos os direitos reservados.</p>
+  </footer> 
 
 </body>
 </html>

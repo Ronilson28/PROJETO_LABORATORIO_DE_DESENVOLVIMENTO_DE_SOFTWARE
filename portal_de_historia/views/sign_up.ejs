@@ -1,0 +1,32 @@
+<main class="main-content">
+  <section class="cadastro-section">
+    <h2>Crie sua Conta</h2>
+  
+    <% if (mensagemErro) { %>
+      <p class="erro"><%= mensagemErro %></p>
+    <% } %>
+
+    <form id="cadastroForm" action="/sign_up" method="POST">
+      <input type="text" name="nome" placeholder="Nome completo" required>
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="email" name="confirmEmail" placeholder="Confirmar E-mail" required>
+      <input type="date" name="dataNascimento" required>
+
+      <input type="text" name="generos" placeholder="Gêneros preferidos (separar por vírgula)" required>
+      <textarea name="biografia" placeholder="Escreva sua biografia" required></textarea>
+
+      <div class="senha-container">
+        <input type="password" name="senha" placeholder="Senha" required>
+        <span class="eye-icon" onclick="toggleSenha('senha', this)">👁️</span>
+      </div>
+
+      <div class="senha-container">
+        <input type="password" name="confirmSenha" placeholder="Confirmar Senha" required>
+        <span class="eye-icon" onclick="toggleSenha('confirmSenha', this)">👁️</span>
+      </div>
+
+      <button type="submit" class="btn-cadastrar">Cadastrar</button>
+    </form>
+  </section>
+</main>
+<script src="script.js"></script>
