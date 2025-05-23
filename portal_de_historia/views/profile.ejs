@@ -1,0 +1,108 @@
+  <main class="perfil-content">
+    <h1>Perfil do Autor</h1>
+    <!-- Cabeçalho do autor -->
+    <section class="cabecalho-autor">
+      <div class="foto-perfil">
+        <img src="<%= user.fotoPerfil%>" alt="Foto do Autor" />
+      </div>
+      <div class="info-perfil">
+        <h2 id="nome-autor"><%= user.nome %></h2>
+        <p id="usuario">@<%= user.usuario %></p>
+
+        <div class="biografia-container">
+          <% if (user.biografia) { %>
+            <p class="bio" id="biografia">" <%= user.biografia %> "</p>
+          <% } else { %>
+            <p class="nao-bio" id="biografia">" O autor ainda não possui uma biografia. "</p>
+          <% } %>
+        </div>
+        
+        <div class="minhas-redes-sociais">
+          <% if (user.redesSociais && Object.keys(user.redesSociais).length > 0) { %>
+            <p><strong>Minhas redes:</strong></p>
+            <ul>
+              <% Object.keys(user.redesSociais).forEach(function(rede) { %>
+                <li>
+                  <strong><%= rede.charAt(0).toUpperCase() + rede.slice(1) %>:</strong>
+                  <% if (user.redesSociais[rede]) { %>
+                    <a href="<%= user.redesSociais[rede] %>" target="_blank">
+                      <%= user.redesSociais[rede] %>
+                    </a>
+                  <% } else { %>
+                    Não disponível
+                  <% } %>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+        
+        <p id="data-criacao"><strong>Criado em:</strong> <%= user.dataCriacao.toLocaleDateString() %></p>
+
+        <div class="acoes-perfil">
+          <button id="btn-editar-perfil" class="btn-editar-perfil">Editar Perfil</button>
+        </div>
+
+      </div>
+
+      </div>
+    </section>
+
+    <section class="nova-historia">
+      <button id="btn-nova-historia" class="btn-principal">Adicionar Nova História</button>
+      <div id="total-historias">Histórias publicadas: <span><%= user.historias.length %></span></div>
+    </section>
+
+    <section class="historias-publicadas">
+      <h2>Minhas Histórias</h2>
+      <ul class="lista-historias">
+      <% if (user.historias.length > 0) { %>
+        <% user.historias.forEach(function(historia) { %>
+            <li class="historia-item">
+              <div class="historia-container">
+                <img src="<%= historia.capa_url %>" alt="Capa da História" class="imagem-capa" />
+                <div class="historia-info">
+                  <h3><%= historia.titulo %></h3>
+                  <p><strong>Categoria:</strong> <%= historia.categoria %></p>
+                  <p><strong>Data de Publicação:</strong> <%= historia.dataPublicacao.toLocaleDateString() %></p>
+                  <p><strong>Resumo:</strong> <%= historia.resumo %></p>
+                </div>
+              </div>
+              <div class="acoes-historia">
+                <button class="btn-editar-historia">Editar</button>
+                <button class="btn-excluir-historia">Excluir</button>
+              </div>
+            </li>
+        <% }); %>
+      <% } else { %>
+        <li><em>Você ainda não publicou nenhuma história.</em></li>
+      <% } %>
+    </section>
+  </main>
+  
+  <!-- Modal para Adicionar Nova História -->
+  <div id="modal-nova-historia" class="modal-nova-historia">
+    <div class="modal-content">
+      <span id="fechar-modal" class="fechar">&times;</span>
+      <h2>Adicionar Nova História</h2>
+      
+      <label for="titulo">Título da História:</label>
+      <input type="text" id="titulo" placeholder="Digite o título da história"/>
+      
+      <label for="categoria">Selecione as Categorias:</label>
+      <div class="categorias">
+        <button class="categoria-btn" data-categoria="Ação">Ação</button>
+        <button class="categoria-btn" data-categoria="Romance">Romance</button>
+        <button class="categoria-btn" data-categoria="Ficção Científica">Ficção Científica</button>
+        <button class="categoria-btn" data-categoria="Fantasia">Fantasia</button>
+        <button class="categoria-btn" data-categoria="Mistério">Mistério</button>
+      </div>
+
+      <label for="nova-categoria">Ou crie uma nova categoria:</label>
+      <input type="text" id="nova-categoria" placeholder="Digite uma nova categoria" />
+      
+      <button id="salvar-historia" class="btn-salvar-historia">Salvar História</button>
+    </div>
+  </div>
+
+  <script src="/javascripts/profile.js"></script>

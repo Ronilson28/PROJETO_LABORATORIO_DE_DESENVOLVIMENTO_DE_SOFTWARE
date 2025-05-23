@@ -4,42 +4,22 @@
   <meta charset="UTF-8" />
   <title><%= title %></title>
   <link rel="stylesheet" href="/stylesheets/style.css" />
-</head>
-<body>
+</head> 
 
+<div class="page-container" id="page-container">
   <!-- Barra de Navegação --> 
-  <header class="site-header">
-    <div class="navbar">
-      <div class="logo">📚 Portal de Histórias</div>
-      <nav class="site-nav">
-        <a href="/">Início</a>
-        <a href="/profile">Perfil</a>
-        <a href="/login">Login</a>
-        <a href="/categorias">Categorias</a>
-      </nav>
-    </div>
-  </header>
+  <% if (showHeader) { %>
+    <%- include('partials/header') %>
+  <% } %>
 
-  <%- body %> <!-- Conteúdo das outras views -->
+  <div class="body-container">
+    <body>
+      <%- body %> <!-- Conteúdo das outras views -->
+    </body>
+  </div>
 
   <!-- Rodapé -->
-  <footer class="site-footer">
-    <div class="social-footer">
-      <a href="https://facebook.com/" target="_blank">
-        <img src="icons/facebook.svg" alt="Facebook">
-      </a>
-      <a href="https://instagram.com/" target="_blank">
-        <img src="icons/instagram.svg" alt="Instagram">
-      </a>
-      <a href="https://twitter.com/" target="_blank">
-        <img src="icons/twitter.svg" alt="Twitter/X">
-      </a>
-      <!--a href="https://linkedin.com/in/suaPagina" target="_blank">
-        <img src="icons/linkedin.svg" alt="LinkedIn">
-      </a-->
-    </div>
-    <p>&copy; 2025 Portal de Histórias. Todos os direitos reservados.</p>
-  </footer> 
+  <%- include('partials/footer') %>
+</div>
 
-</body>
 </html>

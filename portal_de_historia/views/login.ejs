@@ -7,7 +7,7 @@
     <% } %>
 
     <form id="loginForm" action="/login" method="POST">
-      <input type="text" name="usuario" placeholder="Nome de usuário" required>
+      <input type="email" name="email" placeholder="E-mail do usuário" required>
       <input type="password" name="senha" placeholder="Senha" required>
 
       <div class="mostrar-senha">
@@ -18,8 +18,8 @@
       <button type="submit" class="btn-login">Entrar</button>
     </form>
 
-    <p>Não tem conta? <a href="/sign_up">Cadastre-se aqui</a>.</p>
+    <p class="possuir-conta">Não tem conta? <a href="/sign_up">Cadastre-se aqui</a>.</p>
   </section>
 </main>
 
-<script src="/login.js"></script>
+<script src="/javascripts/login_form.js"></script>
