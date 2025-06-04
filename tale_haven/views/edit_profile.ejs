@@ -1,0 +1,41 @@
+<main class="main-content">
+    <section class="editar-perfil-section">
+        <h2>Editar Perfil</h2>
+        <form action="/profile/editar" method="POST">
+            
+            <!-- editar foto de perfil-->
+            <div class="editar-foto-perfil">
+                <div class="foto-contain"  onclick="ampliarImagem(this)">
+                    <img src="<%= autor.fotoPerfil %>" alt="Foto do Autor" title="Foto do Autor" >
+                </div>
+                <label for="fotoPerfil">Selecionar foto</label>
+                <input type="file" name="fotoPerfil" id="fotoPerfil" accept="image/*">
+            </div>
+
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="<%= autor.nome %>" required>
+
+            <label for="usuario">Nome de Usuário:</label>
+            <input type="text" name="usuario" id="usuario" value="<%= autor.usuario %>" required>
+
+            <label for="biografia">Biografia:</label>
+            <textarea name="biografia" id="biografia"><%= autor.biografia %></textarea>
+
+            <h3>Redes Sociais</h3>
+            <label for="twitter">Twitter:</label>
+            <input type="text" name="twitter" value="<%= autor.redesSociais.twitter %>">
+
+            <label for="instagram">Instagram:</label>
+            <input type="text" name="instagram" value="<%= autor.redesSociais.instagram %>">
+
+            <label for="facebook">Facebook:</label>
+            <input type="text" name="facebook" value="<%= autor.redesSociais.facebook %>">
+
+            <label for="sitePessoal">Site Pessoal:</label>
+            <input type="text" name="sitePessoal" value="<%= autor.redesSociais.sitePessoal %>">
+
+            <button class="btn-editar" type="submit">Salvar Alterações</button>
+            <a href="/profile" class="btn-voltar">Cancelar</a>
+        </form>
+    </section>
+</main>
