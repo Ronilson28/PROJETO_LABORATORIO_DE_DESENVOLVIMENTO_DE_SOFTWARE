@@ -9,7 +9,7 @@ const historiaSchema = new mongoose.Schema({
   },
   titulo: { type: String, required: true },
   descricao: {type: String, default: ''},
-  genero: {type: String, default: ''},
+  genero: {type: [String], default: []},
   tags: { type: [String], default: [] },
   status: { 
     type: String,
@@ -18,7 +18,8 @@ const historiaSchema = new mongoose.Schema({
   },
   data_criacao: { type: Date, default: Date.now },
   capa_url: {type: String, default: '/images/book-cover-default.jpg'},
-  
+  capitulo: { type: String, default: '' },
+  resumo: { type: String, default: '' },
   // Campos adicionais
   //capitulos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Capitulo' }],
   //curtidas: { type: Number, default: 0 },

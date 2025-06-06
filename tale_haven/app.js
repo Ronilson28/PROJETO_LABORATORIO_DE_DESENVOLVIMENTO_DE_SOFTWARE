@@ -15,6 +15,7 @@ var loginRouter = require('./routes/login');
 var signUpRouter = require('./routes/sign_up');
 var logoutRouter = require('./routes/logout');
 var profileRouter = require('./routes/profile');
+var historiasRouter = require('./routes/historias');
 //var categoriaProfile = require('./routes/categoriaProfile');
 var app = express();
 
@@ -65,6 +66,7 @@ app.use('/login', loginRouter);
 app.use('/sign_up', signUpRouter);
 app.use('/logout', logoutRouter);
 app.use('/profile', profileRouter);
+app.use('/historias', historiasRouter);
 //ape.use('/categorias', categoriaProfile);
 
 // Middleware para capturar erros 404 (rota não encontrada)

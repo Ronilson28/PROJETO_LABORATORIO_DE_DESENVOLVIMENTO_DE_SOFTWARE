@@ -79,22 +79,4 @@ router.post('/editar', verificarAutenticacao, async (req, res) => {
   }
 });
 
-
-// Rota POST para processar dados enviados pelo formulário
-router.post('/', (req, res) => {
-  const { titulo, categoria, novaCategoria } = req.body;
-
-  // TODO: lógica para salvar história com base no usuário
-  // Exemplo: UserModel.createStory(userId, { titulo, categoria })
-  // Aqui você pode adicionar lógica para salvar a nova história
-  // Por exemplo, adicionar a história a um array ou banco de dados
-
-  // Após processar os dados, você pode redirecionar ou renderizar a página novamente
-  res.redirect('profile', {
-    title: 'Perfil de ' + req.session.autor.nome + ' - Portal de Histórias',
-    mensagemError: null
-  }
-  );
-});
-
 module.exports = router;

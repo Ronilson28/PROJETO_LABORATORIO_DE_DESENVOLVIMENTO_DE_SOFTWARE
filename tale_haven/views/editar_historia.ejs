@@ -1,0 +1,40 @@
+<main class="main-nova-historia">
+  <section class="nova-historia-section">
+    <h1>Editar História</h1>
+
+    <% if (mensagemErro) { %>
+      <p class="erro"><%= mensagemErro %></p>
+    <% } %>
+
+    <!-- ATENÇÃO: ajuste a rota para salvar edição, como /historias/editar/:id -->
+    <form id="novaHistoriaForm" action="/historias/editar/<%= historia._id %>" method="POST">
+      <!-- editar capa -->
+      <div class="editar-capa">
+        <div class="capa-contain" onclick="ampliarImagem(this)">
+          <img src="<%= historia.capa_url || '/images/book-cover-default.jpg' %>" alt="Capa da História" title="Capa da História">
+        </div>
+        <label for="capa_url">Selecionar capa</label>
+        <!-- futuramente ativar envio de imagem com multipart -->
+        <!-- <input type="file" name="capa_url" id="capa_url" accept="image/*"> -->
+      </div>
+
+      <label for="titulo">Título:</label>
+      <input type="text" name="titulo" value="<%= historia.titulo %>" required>
+
+      <label for="resumo">Resumo:</label>
+      <textarea name="resumo" required><%= historia.resumo %></textarea>
+
+      <label for="genero">Gêneros (separados por vírgula):</label>
+      <input type="text" name="genero" value="<%= historia.genero.join(', ') %>" required>
+
+      <label for="capitulo">Conteúdo:</label>
+      <textarea name="capitulo" required><%= historia.capitulo %></textarea>
+
+      <button type="submit" class="btn-nova-historia">Salvar Alterações</button>
+    </form>
+
+    <p class="voltar-perfil"><a href="/profile">Voltar ao Perfil</a></p>
+  </section>
+</main>
+
+<script src="/javascripts/editar_historia.js"></script>

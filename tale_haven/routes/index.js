@@ -8,8 +8,11 @@ var router = express.Router();
 router.get('/', async (req, res) => {
   console.log('Sessão atual:', req.session);
   try {
-    const destaque = await Historia.findOne().sort({ dataCriacao: -1 }).populate('id_autor');
-    const categorias = ['Ação', 'Fantasia', 'Ficção Científica', 'Mistério', 'Romance', 'Suspense', 'Terror'];
+    const total = await Historia.countDocuments();
+    const random = Math.floor(Math.random() * total);
+    const destaque = await Historia.findOne().skip(random).populate('id_autor');
+    //const destaque = await Historia.findOne().sort({ dataCriacao: -1 }).populate('id_autor');
+    const categorias = ['Ação', 'Drama', 'Fantasia', 'Ficção Científica', 'LGBT', 'Mistério', 'Romance', 'Suspense', 'Terror'];
     
     if (!destaque) {
       console.log('Nenhuma história encontrada para destaque.');
