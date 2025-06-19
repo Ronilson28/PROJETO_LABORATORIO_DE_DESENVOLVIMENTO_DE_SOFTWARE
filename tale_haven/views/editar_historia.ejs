@@ -1,40 +1,53 @@
 <main class="main-nova-historia">
-  <section class="nova-historia-section">
-    <h1>Editar História</h1>
+    <section class="nova-historia-section">
+        <h1>Editar História</h1>
 
-    <% if (mensagemErro) { %>
-      <p class="erro"><%= mensagemErro %></p>
-    <% } %>
-
-    <!-- ATENÇÃO: ajuste a rota para salvar edição, como /historias/editar/:id -->
-    <form id="novaHistoriaForm" action="/historias/editar/<%= historia._id %>" method="POST">
-      <!-- editar capa -->
-      <div class="editar-capa">
-        <div class="capa-contain" onclick="ampliarImagem(this)">
-          <img src="<%= historia.capa_url || '/images/book-cover-default.jpg' %>" alt="Capa da História" title="Capa da História">
-        </div>
-        <label for="capa_url">Selecionar capa</label>
-        <!-- futuramente ativar envio de imagem com multipart -->
-        <!-- <input type="file" name="capa_url" id="capa_url" accept="image/*"> -->
-      </div>
-
-      <label for="titulo">Título:</label>
-      <input type="text" name="titulo" value="<%= historia.titulo %>" required>
-
-      <label for="resumo">Resumo:</label>
-      <textarea name="resumo" required><%= historia.resumo %></textarea>
-
-      <label for="genero">Gêneros (separados por vírgula):</label>
-      <input type="text" name="genero" value="<%= historia.genero.join(', ') %>" required>
-
-      <label for="capitulo">Conteúdo:</label>
-      <textarea name="capitulo" required><%= historia.capitulo %></textarea>
-
-      <button type="submit" class="btn-nova-historia">Salvar Alterações</button>
-    </form>
-
-    <p class="voltar-perfil"><a href="/profile">Voltar ao Perfil</a></p>
-  </section>
+        <form id="novaHistoriaForm" action="/historias/editar/<%= historia._id %>" method="POST" enctype="multipart/form-data">
+            <div class="editar-capa">
+                <div class="capa-contain" onclick="ampliarImagem(this)">
+                    <img src="<%= historia.capa_url %>" alt="Capa da História" title="Capa da História">
+                </div>
+                <label for="capa_url">Selecionar capa</label>
+                <input type="file" name="capa_url" id="capa_url" accept="image/*">
+            </div>
+            <label for="titulo">Título:</label>
+            <input type="text" name="titulo" placeholder="Título da História" value="<%= historia.titulo %>" required>
+            <label for="genero">Genêro (se mais de um, separar por vírgula):</label>
+            <input type="text" name="genero" placeholder="Ex.: Ação, Aventura, Fantasia" value="<%= historia.genero %>" required>
+            <label for="resumo">Resumo:</label>
+            <textarea name="resumo" placeholder="Resumo da História" required><%= historia.resumo %></textarea>
+            <label for="capitulos">Capítulos:</label>
+            <div id="capitulos-container">
+                <% historia.capitulos.forEach((cap, index) => { %>
+                    <div class="capitulo" data-index="<%= index %>">
+                        <!-- Campo oculto com o ID do capítulo -->
+                        <input type="hidden" name="capitulos[<%= index %>][id]" value="<%= cap._id %>">
+      
+                        <input
+                            type="text"  
+                            name="capitulos[<%= index %>][titulo]" 
+                            value="<%= cap.titulo %>" 
+                            placeholder="Título do Capítulo <%= index + 1 %>" 
+                            required
+                        >
+                        <textarea 
+                            name="capitulos[<%= index %>][conteudo]" 
+                            placeholder="Conteúdo do Capítulo <%= index + 1 %>" 
+                            required><%= cap.conteudo %>
+                        </textarea>
+                        <% if (index !== 0) { %>
+                            <button type="button" class="btn-remover-capitulo" onclick="removerCapitulo(this)">Remover</button>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+            <button type="button" class="btn-adicionar-capitulo" onclick="adicionarCapitulo()">Adicionar Capítulo</button>
+            <div class="acoes-nova-historia">
+                <button type="submit" class="btn-nova-historia">Salvar alterações</button>
+                <button type="button" class="btn-cancelar-nova-historia">Cancelar</button>
+            </div>
+        </form>
+    </section>
 </main>
 
 <script src="/javascripts/editar_historia.js"></script>

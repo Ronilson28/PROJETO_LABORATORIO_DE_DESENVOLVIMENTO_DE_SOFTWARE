@@ -2,24 +2,30 @@ const express = require('express');
 const router = express.Router();
 const Autor = require('../models/Autor');
 const Historia = require('../models/Historia');
+const upload = require('../middlewares/upload');
 const verificarAutenticacao = require('../middlewares/auth');
 
 // Rota GET para exibir o perfil do autor
 router.get('/', verificarAutenticacao, async (req, res) => {
-  console.log('Sessão atual:', req.session); 
   try {
     const autor = await Autor.findById(req.session.autor.id).populate('historias');
     if (!autor) {
-      return res.status(404).send("Autor não encontrado.");
+      return res.status(404).render('index', {
+        title: 'Tale Haven',
+        mensagemErro: "Autor não encontrado."
+      });
     }
     res.render('profile', {
-      title: 'Perfil de ' + req.session.autor.nome + ' - Portal de Histórias',
+      title: autor.nome + ' - Tale Haven',
       autor,
-      mensagemError: null
+      mensagemErro: null
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Erro ao carregar o perfil.');
+    res.status(500).render('index',{
+      title: 'Tale Haven',
+      mensagemErro: 'Erro ao carregar o perfil.'
+    });
   }
 });
 
@@ -28,33 +34,35 @@ router.get('/editar', verificarAutenticacao, async (req, res) => {
   try {
     const autor = await Autor.findById(req.session.autor.id);
     if (!autor) {
-      return res.status(404).send('Autor não encontrado.');
+      return res.status(404).redirect('/profile');
     }
     res.render('edit_profile', { 
       title: 'Editar Perfil - ' + autor.nome, 
       autor, 
-      mensagemError: null 
+      mensagemErro: null 
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Erro ao carregar o formulário de edição.');
+    res.status(500).render('profile',{
+      title: req.session.autor.nome + 'Tale Haven',
+      mensagemErro: 'Erro ao carregar o formulário de edição.'
+    });
   }
 });
 
 // Rota POST - Processa edição de perfil
-router.post('/editar', verificarAutenticacao, async (req, res) => {
+router.post('/editar', verificarAutenticacao, upload.single('fotoPerfil'), async (req, res) => {
   try {
-    const { nome, usuario, biografia, twitter, instagram, facebook, sitePessoal, fotoPerfil } = req.body;
+    const { nome, usuario, biografia, twitter, instagram, facebook, sitePessoal } = req.body;
 
     const autor = await Autor.findById(req.session.autor.id);
     if (!autor) {
-      return res.status(404).send('Autor não encontrado.');
+      return res.status(404).redirect('/profile');
     }
     
-    if (fotoPerfil) {
-      // Salvar a foto em um diretório e atualizar o caminho no banco de dados
-
-      autor.fotoPerfil = fotoPerfil; // Atualiza o campo com a nova foto
+    if (req.file) {
+      // Se uma nova foto foi enviada, atualiza o caminho da fotoPerfil
+      autor.fotoPerfil = '/uploads/perfil/' + req.file.filename;
     }
 
     // Atualiza os campos do autor
@@ -75,7 +83,10 @@ router.post('/editar', verificarAutenticacao, async (req, res) => {
     res.redirect('/profile');
   } catch (err) {
     console.error(err);
-    res.status(500).send('Erro ao atualizar perfil.');
+    res.status(500).render('edit_profile', {
+      title: 'Editar Perfil' + req.session.autor.nome,
+      mensagemErro: 'Erro ao atualizar perfil. Tente novamente.'
+    });
   }
 });
 

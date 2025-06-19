@@ -5,7 +5,7 @@ const Autor = require('../models/Autor');
 // Rota GET para exibir o formulário de login
 router.get('/', (req, res) => {
   res.render('login', {
-    title: 'Login - Portal de Histórias',
+    title: 'Login - Tale Haven',
     mensagemErro: null
   });
 });
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     const autor = await Autor.findOne({ email });
     if (!autor) {
       return res.render('login', {
-        title: 'Login - Portal de Histórias',
+        title: 'Login - Tale Haven',
         mensagemErro: 'E-mail não cadastrado'
       });
     }
@@ -29,13 +29,11 @@ router.post('/', async (req, res) => {
     console.log('E-mail digitado:', req.body.email);
     // Log para depuração da senha
     console.log('Senha digitada:', req.body.senha);
-    console.log('Autor encontrado:', autor);
-    console.log('Senha armazenada (hash):', autor?.senha);
 
     // Verifica se a senha está correta
     if (!senha) {
       return res.render('login', {
-        title: 'Login - Portal de Histórias',
+        title: 'Login - Tale Haven',
         mensagemErro: 'Senha não informada'
       });
     }
@@ -44,7 +42,7 @@ router.post('/', async (req, res) => {
     const senhaCorreta = await autor.compararSenha(senha);
     if (!senhaCorreta) {
       return res.render('login', {
-        title: 'Login - Portal de Histórias',
+        title: 'Login - Tale Haven',
         mensagemErro: 'Senha incorreta'
       });
     }
@@ -61,7 +59,7 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error('Erro no login:', err);
     res.status(500).render('login', {
-      title: 'Login - Portal de Histórias',
+      title: 'Login - Tale Haven',
       mensagemErro: 'Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.'
     });
   }

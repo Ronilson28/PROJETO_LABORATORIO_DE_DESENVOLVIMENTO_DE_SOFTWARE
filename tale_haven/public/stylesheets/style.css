@@ -5,12 +5,23 @@
     box-sizing: border-box;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Geral */
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(to right, #6a0dad, #808080);
 }
 
+.erro {
+  color: #ffffff;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* Cabeçalho */
 .site-header, .site-footer {
   background: linear-gradient(90deg, #611d8c, #9e9e9e);
   color: #ffffff;
@@ -50,22 +61,12 @@ body {
   text-decoration: underline;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Entrar e Cadastro*/
 .main-content {
   padding: 20px;
-  min-height: 575px;
+  min-height: 625px;
   align-content: center;
-}
-
-.erro {
-  color: #ffffff;
-  background-color: #ffffff0b;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 10px;
 }
 
 .login-section, .cadastro-section {
@@ -88,7 +89,7 @@ body {
   background-clip: text;
   color: transparent;
 }
-  /* || form */
+
 .login-section form, .cadastro-section form {
   margin-top: 15px;
   display: flex;
@@ -211,136 +212,128 @@ textarea {
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Pagina Inicial */
 .pagina-inicial {
   padding: 20px;
-  margin: auto;
   margin-top: 20px;
-  border-radius: 10px;
-  margin-bottom: -40px;
-  box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+  height: 100%;
+  color: #ffffff;
 }
 
 .destaque {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  background-color: #ffffff20;
   border-radius: 25px;
 }
 
 .destaque h1 {
-  margin-bottom: 20px;
+  margin-left: 12px;
+  margin-bottom: 5px;
   background-clip: text;
-  color: #ffffff;
 }
 
 .destaque-banner {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #ffffff20;
   border-radius: 25px;
   cursor: pointer;
-  gap: 25px;
+  padding: 10px;
 }
 
 .destaque-banner img {
-  width: 72%;
-  height: 300px;
+  width: 98%;
+  height: 500px;
   object-fit: cover;
-  border-radius: 25px;
+  border-radius: 25px 25px 0 0;
 }
 
-.destaque-banner img:hover, .info:hover {
-  transform: scale(1.05);
-}
-
-.info {
+.info-destaque {
   background-color: #ffffff20;
-  height: 300px;
+  width: 98%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   padding: 20px;
-  border-radius: 25px;
+  border-radius: 0 0 25px 25px;
   justify-items: center;
   justify-content: center;
 }
 
-.info h2 {
+.info-destaque h2 {
   font-size: 24px;
-  margin-bottom: 10px;
-  color: #000000;
   text-align: center;
 }
 
-.info p {
+.info-destaque p {
   font-size: 16px;
-  color: #363636;
 }
 
 .categoria {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
   gap: 10px;
   padding: 20px;
-  background-color: #ffffff20;
   border-radius: 25px;
 }
 
 .categoria h2 {
   font-size: 24px;
-  color: #ffffff;
 }
 
 .carrossel {
-  background-color: #ffffff20;
   display: flex;
   overflow-x: auto;
   gap: 10px;
-  padding: 20px;
   scroll-behavior: smooth;
-  border-radius: 25px;
+  scrollbar-width: none;
 }
 
 .card-historia {
-  background-color:#ffffff;
   min-width: 200px;
+  max-width: 200px;
   flex-shrink: 0;
-  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
   flex-direction: column;
   text-align: center;
   cursor: pointer;
 }
 
 .card-historia:hover {
-  transform: scale(1.05);
+  margin: 5px;
+  transform: scale(1.025);
 }
 
-.card-historia img {
-  width: 100%;
+.card-img {
   height: 250px;
-  object-fit: cover;
 }
 
-.card-historia h3 {
-  margin: 5px;
-  font-size: 18px;
-  color: #000000;
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit:fill;
+  border-radius: 15px 15px 0 0;
 }
 
-.card-historia p {
-  margin: 5px;
+.info-card {
+  background-color: #ffffff20;
+  border-radius: 0 0 15px 15px;
+  padding: 2px;
+}
+
+.info-card h3 {
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.info-card p {
   font-size: 14px;
-  color: #000000;
+  padding: 1px;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Perfil */
 .perfil-content {
   padding: 20px;
@@ -371,8 +364,8 @@ textarea {
 }
 
 .foto-perfil img {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
 }
 
@@ -384,8 +377,29 @@ textarea {
   gap: 8px;
 }
 
+.nome-seguir {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.btn-seguir {
+  background-color: #7B68EE;
+  color: #ffffff;
+  padding: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 #usuario {
   color: #efc6ffa5;
+}
+
+.editar-perfil-section h3 {
+  margin-top: 20px;
+  color: #ffffff;
 }
 
 .minhas-redes-sociais {
@@ -411,12 +425,19 @@ textarea {
 }
 
 .minhas-redes-sociais a {
-  color: #efc6ffd5;
+  color: #ffffff;
   text-decoration: none;
 }
 
 .minhas-redes-sociais a:hover {
   text-decoration: underline;
+}
+
+.contagem-seguidores {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  gap: 40px;
 }
 
 .acoes-perfil {
@@ -448,7 +469,7 @@ textarea {
 
 #btn-nova-historia {
   background-color: #ffffff;
-  min-height: 50px;
+  min-height: 45px;
   color: #000000;
   padding: 8px;
   border: none;
@@ -489,48 +510,56 @@ textarea {
 }
 
 .historias-publicadas ul {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  list-style: none;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
   gap: 10px;
 }
 
 .historias-publicadas li {
-  display: flex;
+  width: 250px;
+  min-width: 250px;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 6px;
+  /*background-color: #ffffff*/;
 }
 
 .historia-container {
-  width: 100%;
+  background-color: #ffffff20;
   display: flex;
-  flex-direction:row;
-  gap: 20px;
-  padding: 20px;
-  background-color: #9300c420;
-  border-radius: 6px 0px 0px 6px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-direction:column;
+  border-radius: 30px;
   transition: all 0.3s ease;
   align-items: center;
 }
 
 .historia-container img {
-  width: 200px;
-  height: 250px;
-  border-radius: 10%;
+  width: 100%;
+  height: 300px;
+  border-radius: 10% 10% 0 0;
+  object-fit: fill;
 }
 
 .historia-info {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  padding: 10px;
+  text-align: center;
+  gap: 2px;
 }
 
 .historia-info h3 {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 5px;
+}
+
+#genero-publico {
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .historia-info p {
@@ -538,167 +567,87 @@ textarea {
   color: #000000;
 }
 
+#resumo-publico {
+  padding: 5px;
+  height: 65px;
+  overflow: auto;
+  scrollbar-width:thin;
+  scrollbar-color: #ffffff40 transparent;
+  text-align: justify;
+  margin-bottom: 15px;
+  border-top: 2px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+}
+
 .acoes-historia {
-  height: 290px;
-  background-color: #9300c420;
+  max-height: 50px ;
   display: flex;
-  justify-content: space-between;
-  border-radius: 0px 6px 6px 0px;
-  align-items: center;
-  padding: 20px;
-  gap: 20px;
+  align-items:end;
+  padding: 10px;
+  margin-bottom: 5px;
+  gap: 10px;
 }
 
 .btn-ler-historia, .btn-editar-historia, .btn-excluir-historia {
-  min-width: 70px;
-  min-height: 40px;
+  min-width: 55px;
+  min-height: 30px;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 6px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+.btn-ler-historia, .btn-editar-historia {
+  color: #000000;
 }
 
 .btn-ler-historia {
   background-color: #7B68EE;
-  color: #000000;
-  padding: 8px;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-ler-historia:hover {
-  background-color: #9d5fe8;
-  color: #ffffff;
-  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .btn-editar-historia {
   background-color: #ffffff;
-  color: #000000;
-  padding: 8px;
-  border: 1px solid #00000027;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-editar-historia:hover {
-  background-color: #7c68ee;
-  color: #ffffff;
-  font-weight: 600;
+  border: none;
 }
 
 .btn-excluir-historia {
   background-color: #ff4f4f;
   color: #ffffff;
-  padding: 8px;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
+}
+
+.btn-ler-historia:hover, .btn-editar-historia:hover, .btn-excluir-historia:hover {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-ler-historia:hover {
+  background-color: #9d5fe8;
+}
+
+.btn-editar-historia:hover {
+  background-color: #7c68ee;
 }
 
 .btn-excluir-historia:hover {
   background-color: #ff0000;
-  color: #ffffff;
-  font-weight: 600;
 }
 
-#modal-nova-historia {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+.sem-historias {
+  display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
-}
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 500px;
-  max-width: 90%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  gap: 10px;
-}
-
-#fechar-modal {
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bolder;
-  align-self: flex-end;
-}
-
-#fechar-modal:hover {
-  color: #ff4f4f;
-}
-
-.modal-content h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.modal-content label {
-  margin-top: 10px;
-  margin-bottom: 0px;
-  color: #000000;
-}
-
-.modal-content input[type="text"] {
-  padding: 10px;
-  border: 1px solid #000000;
-  border-radius: 6px;
-}
-
-.modal-content textarea {
-  padding: 10px;
-  border: 1px solid #000000;
-  border-radius: 6px;
-  resize: vertical;
-}
-
-.categorias {
-  display: flex;
-  gap: 10px;
-}
-
-.categoria-btn {
-  background-color: #ffffff;
-  border: 1px solid #000000;
-  color: #000000;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.categoria-btn:hover, .categoria-btn.selected {
-  background-color: #7c68ee;
-  border: none;
   color: #ffffff;
-  font-weight: 600;
 }
 
-.btn-salvar-historia {
-  background-color: #7B68EE;
-  color: #ffffff;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.btn-salvar-historia:hover {
-  background-color: #9d5fe8;
-  font-weight: 600;
-}
-
+/* -------------------------------------------------------------------------------------------------------- */
 /* Editar Perfil */
 .editar-perfil-section {
   display: flex;
@@ -725,6 +674,7 @@ textarea {
   gap: 10px;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Editar Foto de Perfil */
 .editar-foto-perfil {
   display: flex;
@@ -768,6 +718,7 @@ textarea {
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Editar Formulário de Perfil */
 .editar-perfil-section input[type="text"],
 .editar-perfil-section input[type="email"],
@@ -795,7 +746,7 @@ textarea {
   font-weight: 600;
 }
 
-.btn-voltar {
+.btn-cancelar {
   background-color: #ffffff;
   color: #000000;
   padding: 10px;
@@ -807,25 +758,38 @@ textarea {
   text-decoration: none;
 }
 
-.btn-voltar:hover {
+.btn-cancelar:hover {
   background-color: #7c68ee;
   color: #ffffff;
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Cadastro de História */
 .main-nova-historia {
   padding: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
   background-color: #ffffff20;
   border-radius: 25px;
-  min-width: 800px;
+  width: 100%;
+  max-width: 800px;
   box-shadow: 0 5px 5px rgba(0,0,0,0.1);
   align-self: center;
   justify-self: center;
 }
+
 .nova-historia-section {
+  display: flex;
+  flex-direction: column;
   margin-top: 20px;
+}
+
+.nova-historia-section h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(to right, #d345f6, #ffffff);
+  background-clip: text;
+  color: transparent;
 }
 
 .nova-historia-section form {
@@ -838,22 +802,25 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
   margin-top: 20px;
   justify-content: center;
   gap: 10px;
 }
 
-.capa-contain img {
-  width: 150px;
-  height: 150px;
-  border-radius: 5%;
-  cursor: pointer;
+.capa-contain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: -20px;
 }
 
-.capa-contain img:hover {
-  transform: scale(1.15);
-  transition: transform 0.3s ease;
+.capa-contain img {
+  width: 90%;
+  height: 300px;
+  border-radius: 2%;
+  cursor: pointer;
 }
 
 .editar-capa input[type="file"] {
@@ -880,60 +847,111 @@ textarea {
   margin-top: 20px;
 }
 
-.nova-historia-section h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  background: linear-gradient(to right, #d345f6, #ffffff);
-  background-clip: text;
-  color: transparent;
-}
-
-.btn-nova-historia {
-  margin-top: 20px;
-  background-color: #7B68EE;
-  color: #ffffff;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  align-self: center;
-}
-
-.btn-nova-historia:hover {
-  background-color: #9d5fe8;
-  font-weight: 600;
-}
-
-.voltar-perfil {
+#capitulos-container {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.voltar-perfil a {
+.capitulo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.capitulo input[type="text"] {
+  text-align: center;
+}
+
+/* Destaca o bloco do capítulo */
+.capitulo.destacar {
+  border: 2px dashed #ffffff;
+  padding: 5px;
+  background-color: #e74c3c;
+}
+
+.btn-adicionar-capitulo {
   background-color: #ffffff;
   color: #000000;
   padding: 10px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  align-self: center;
-  text-decoration: none;
+  font-size: 16px;
 }
-.voltar-perfil a:hover {
+
+.btn-adicionar-capitulo:hover {
   background-color: #7c68ee;
   color: #ffffff;
   font-weight: 600;
 }
 
+.btn-remover-capitulo {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-remover-capitulo:hover {
+  background-color: #e74c3c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.acoes-nova-historia {
+  display: flex;
+  margin-top: 40px;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-nova-historia, .btn-cancelar-nova-historia {
+  min-width: 100px;
+  height: 45px;
+  padding: 10px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  align-self: center;
+}
+
+.btn-nova-historia {
+  background-color: #7B68EE;
+}
+
+.btn-nova-historia:hover {
+  background-color: #9d5fe8;
+}
+
+.btn-cancelar-nova-historia {
+  background-color: #ff4f4f;
+}
+
+.btn-cancelar-nova-historia:hover {
+  background-color: #ff0000;
+}
+
+.btn-nova-historia:hover, .btn-cancelar-nova-historia:hover {
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
 /* Ler História */
 .main-leitura {
   max-width: 900px;
   margin: 0 auto;
   margin-top: 20px;
-  padding: 2rem;
+  margin-bottom: 20px;
+  padding: 20px;
   font-family: 'Georgia', serif;
   background-color: #ffffff70;
   color: #2e2e2e;
@@ -947,7 +965,6 @@ textarea {
 
 .leitura-capa img {
   width: 100%;
-  max-width: 800px;
   max-height: 500px;
   border-radius: 12px;
 }
@@ -974,18 +991,23 @@ textarea {
 
 .btn-voltar {
   display: inline-block;
-  margin-top: 2rem;
-  background-color: #007bff;
+  margin-top: 20px;
+  background-color: #007bff80;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 10px 15px;
+  text-align: center;
   text-decoration: none;
   border-radius: 6px;
+  align-self: center;
 }
 
+.btn-voltar:hover {
+  background-color: #007bff;
+}
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Rodapé */
 .site-footer {
-  margin-top: 40px;
   padding: 10px;
 }
 
@@ -1027,54 +1049,6 @@ textarea {
 .all-rights-reserved {
   margin-top: 10px;
 }
-
-/*
-#generos-container {
-  background-color: #ffffff;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 2px;
-  border-radius: 6px;
-}
-
-.genero-item {
-  padding: 5px;
-  display: flex;
-  align-items: center;
-}
-
-.genero-item label {
-  font-size: 14px;
-  color: rgb(0, 0, 0, 80%);
-}
-
-.genero-item input[type="checkbox"] {
-  margin-right: 5px;
-}
-
-
-#novoGenero {
-  width: 75%;
-  border-radius: 6px;
-}
-
-#btnAddGenero {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 10px 0px 10px 0px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 24%;
-}
-
-#btnAddGenero:hover {
-  background-color: #7B68EE;
-  color: #ffffff;
-  font-weight: 600;
-}*/
 
 .generos-container {
   width: 460px;
@@ -1164,43 +1138,43 @@ textarea {
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------------------------------------- */
 /* Erro */
-.erro-container {
+#erro-contain {
+  min-height: 520px;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff0b;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  min-height: 540px;
-  margin-bottom: -40px;
+  margin: 20px;
+  color: #ffffffbf;
 }
 
 .erro-message {
-  background-color: #ffffff0b;
   padding: 10px;
   border-radius: 8px;
   margin: 10px 0;
   text-align: center;
   font-size: 14px;
+  background-color: #ffffff0b;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .erro-status {
-  background-color: #ffffff0b;
   padding: 10px;
   border-radius: 8px;
   text-align: center;
   font-size: 14px;
+  background-color: #ffffff0b;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .erro-stack {
-  background-color: #ffffff0b;
   padding: 20px;
   border-radius: 8px;
-  margin: 10px 0;
+  margin: 10px 0px;
   text-align: center;
   font-size: 14px;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow: auto;
-  max-height: 400px;
+  max-height: 420px;
+  background-color: #ffffff0b;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

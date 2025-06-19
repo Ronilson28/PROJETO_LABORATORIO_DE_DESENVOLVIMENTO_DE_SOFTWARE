@@ -2,27 +2,40 @@ const express = require('express');
 const router = express.Router();
 const Autor = require('../models/Autor');
 const Historia = require('../models/Historia');
+const Capitulo = require('../models/Capitulo');
+const upload = require('../middlewares/upload');
 const verificarAutenticacao = require('../middlewares/auth');
 
 // Visualização da História
 router.get('/:id/ler', async (req, res) => {
+  const origem = req.query.from;
+  const titulo = req.query.title;
+  const usuario = req.query.user;
+  
   try {
-    const historia = await Historia.findById(req.params.id).populate('id_autor');
-    
+    const historia = await Historia.findById(req.params.id).populate('id_autor').populate('capitulos');
     if (!historia) {
-      return res.status(404).render('error', { message: 'História não encontrada.' });
+      return res.status(404).render(origem, {
+        title: titulo,
+        usuario,
+        mensagemErro: 'História não encontrada.'
+      });
     }
 
-    const origem = req.query.from || 'index';
-
     res.render('ler_historia',{
-      title: historia.titulo,
+      title: historia.titulo + ' - Tale Haven',
       historia,
-      origem
+      origem,
+      titulo,
+      usuario,
+      mensagemErro: null
     });
   } catch (err) {
     console.error(err);
-    res.status(500).render('error', { message: 'Erro ao carregar a história.' });
+    res.status(500).render(origem, {
+      title: titulo,
+      messagemErro: 'Erro ao carregar a história.'
+    });
   }
 });
 
@@ -35,44 +48,52 @@ router.get('/nova-historia', verificarAutenticacao, (req, res) => {
 });
 
 // Criar nova história (POST /historias/nova-historia)
-router.post('/nova-historia', verificarAutenticacao, async (req, res) => {
+router.post('/nova-historia', verificarAutenticacao, upload.single('capa_url'), async (req, res) => {
   try {
-    const { titulo, genero, resumo, capitulo} = req.body;
-    
+    const { titulo, genero, resumo, capitulos } = req.body;
+
     // Convertendo string em array
     const generosArray = (genero || "")
       .split(',')
       .map(g => g.trim())
       .filter(g => g);
-
-      console.log('titulo:', titulo);
-      console.log('genero (bruto):', genero);
-      console.log('generosArray:', generosArray);
-      
-    // Verifica se o título e pelo menos um gênero foram fornecidos
-      if (!titulo || generosArray.length === 0) {
-      return res.status(400).render('nova_historia', {
-        title: 'Criar Nova História',
-        mensagemErro: 'Título e pelo menos um gênero são obrigatórios.'
-      });
-    }
     
     const novaHistoria = new Historia({
       titulo,
       genero: generosArray,
       resumo,
-      capitulo,
-      id_autor: req.session.autor.id
+      id_autor: req.session.autor.id,
+      capa_url: req.file ? '/uploads/capas/' + req.file.filename : '/images/book-cover-default.jpg'
     });
     await novaHistoria.save();
     console.log('Nova história criada:', novaHistoria);
-    
-    // Aqui atualiza o array 'historias' no Autor
+
+    // Processa os capítulos
+    const capitulosArray = Object.values(capitulos);
+    const capitulosIds = [];
+
+    for (let i = 0; i < capitulosArray.length; i++) {
+      const cap = capitulosArray[i];
+      const novoCapitulo = new Capitulo({
+        titulo: cap.titulo,
+        conteudo: cap.conteudo,
+        numero: i + 1,
+        id_historia: novaHistoria._id
+      });
+      await novoCapitulo.save();
+      capitulosIds.push(novoCapitulo._id);
+    }
+
+    // Atualiza a história com os capítulos criados
+    novaHistoria.capitulos = capitulosIds;
+    await novaHistoria.save();
+
+    // Atualiza o autor com a nova história
     await Autor.findByIdAndUpdate(
       req.session.autor.id,
       { $push: { historias: novaHistoria._id } }
     );
-    console.log('Autor atualizado com nova história:', req.session.autor.id);
+    console.log('Autor atualizado com nova história:', req.session.autor.nome);
 
     // Redirecionar para o perfil após criar
     res.redirect('/profile');
@@ -86,19 +107,19 @@ router.post('/nova-historia', verificarAutenticacao, async (req, res) => {
 });
 
 // Excluir história (DELETE /historias/:id)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verificarAutenticacao, async (req, res) => {
   try {
-    const { id } = req.params;
-    const historia = await Historia.findById(id);
+    const historia = await Historia.findOne({ _id: req.params.id, id_autor: req.session.autor.id });
 
     if (!historia) {
-      return res.status(404).json({ message: 'História não encontrada.' });
+      return res.status(404).json({ message: 'História não encontrada ou você não tem permissão para excluí-la.' });
     }
 
-    // Se quiser proteger: verificar se req.user é autor
-    // if (!historia.autor.equals(req.user._id)) return res.status(403).json({ message: 'Sem permissão.' });
+    await Historia.deleteOne({ _id: req.params.id });
 
-    await Historia.findByIdAndDelete(id);
+    // Remove a história do array 'historias' do Autor
+    await Autor.findByIdAndUpdate(req.session.autor.id, { $pull: { historias: req.params.id } });
+
     res.json({ message: 'História excluída com sucesso!' });
   } catch (error) {
     console.error(error);
@@ -109,17 +130,18 @@ router.delete('/:id', async (req, res) => {
 // GET /historias/editar/:id
 router.get('/editar/:id', verificarAutenticacao, async (req, res) => {
   try {
-    const historia = await Historia.findById(req.params.id);
+    const historia = await Historia.findById(req.params.id).populate('capitulos');
     if (!historia) {
       return res.status(404).render('404', { mensagem: 'História não encontrada' });
     }
+    console.log('História encontrada:', historia);
     res.render('editar_historia', {
       title: 'Editar História',
       historia,
       mensagemErro: null
     });
   } catch (err) {
-    console.error(error);
+    console.error(err);
     res.status(500).render('nova_historia', {
       title: 'Editar História',
       mensagemErro: 'Erro ao editar a história. Tente novamente.'
@@ -128,25 +150,72 @@ router.get('/editar/:id', verificarAutenticacao, async (req, res) => {
 });
 
 // POST /historias/editar/:id
-router.post('/editar/:id', verificarAutenticacao, async (req, res) => {
+router.post('/editar/:id', verificarAutenticacao, upload.single('capa_url'), async (req, res) => {
   try {
-    const { titulo, genero, resumo, capitulo } = req.body;
+    const { titulo, genero, resumo, capitulos_removidos } = req.body;
     const generosArray = (genero || "").split(',').map(g => g.trim()).filter(Boolean);
 
-    const historiaAtualizada = await Historia.findByIdAndUpdate(
-      req.params.id,
-      {
-        titulo,
-        genero: generosArray,
-        resumo,
-        capitulo,
-        atualizado_em: new Date(Date.now())
-      },
-      { new: true, runValidators: true }
-    );
+    // Buscar a história atual
+    const historiaExistente = await Historia.findById(req.params.id).populate('capitulos');
+    if (!historiaExistente) {
+      req.session.mensagemErro = 'História não encontrada.';
+      return res.status(404).redirect('/profile');
+    }
+    
+    // Deletar os capítulos antigos (opcional, se quiser limpar duplicatas)
+    await Capitulo.deleteMany({ id_historia: historiaExistente._id });
+    
+    const novosIdsCapitulos = [];
+    const capitulosData = req.body.capitulos;
+
+    if (capitulosData && typeof capitulosData === 'object') {
+      for (const index in capitulosData) {
+        const capitulo = capitulosData[index];
+        if (capitulo._id) {
+          // Se o capítulo já existe, atualiza
+          await Capitulo.findByIdAndUpdate(capitulo._id, {
+            titulo: capitulo.titulo,
+            conteudo: capitulo.conteudo,
+            atualizado_em: new Date(Date.now())
+          });
+          novosIdsCapitulos.push(capitulo._id);
+        }
+        else {
+          // Se é um novo capítulo, cria
+          const novoCapitulo = new Capitulo({
+            titulo: capitulo.titulo,
+            conteudo: capitulo.conteudo,
+            numero: novosIdsCapitulos.length + 1, // Incrementa o número do capítulo
+            id_historia: historiaExistente._id
+          });
+          const novoCapituloSalvo = await novoCapitulo.save();
+          novosIdsCapitulos.push(novoCapituloSalvo._id);
+        }
+      }
+    }
+
+    // Se houver capítulos removidos, exclui-os
+    if (capitulos_removidos) {
+      const capitulosIds = capitulos_removidos.split(',').map(id => id.trim()).filter(Boolean);
+      await Capitulo.deleteMany({ _id: { $in: capitulosIds } });
+    }
+    
+    // Atualiza a capa se uma nova for enviada
+    const capaAtualizada = req.file ? '/uploads/capas/' + req.file.filename : historiaExistente.capa_url;
+
+    // Atualiza a história com os novos dados
+    historiaExistente.titulo = titulo;
+    historiaExistente.genero = generosArray;
+    historiaExistente.resumo = resumo;
+    historiaExistente.capitulos = novosIdsCapitulos;
+    historiaExistente.atualizado_em = new Date(Date.now());
+    historiaExistente.capa_url = capaAtualizada;
+
+    const historiaAtualizada = await historiaExistente.save();
 
     if (!historiaAtualizada) {
-      return res.status(404).render('erro', { mensagem: 'História não encontrada.' });
+      req.session.mensagemErro = 'História não encontrada.';
+      return res.status(404).redirect('/profile');
     }
 
     res.redirect('/profile');

@@ -16,13 +16,20 @@
     </div>
 
     <div class="leitura-conteudo">
-      <h2>Capítulo #1</h2>
-      <p><%- historia.capitulo.replace(/\n/g, '<br>') %></p>
+      <div class="leitura-capitulos">
+        <% historia.capitulos.forEach((cap, index) => { %>
+          <div class="capitulo">
+            <h2><%= cap.titulo || ('Capítulo ' + (index + 1)) %></h2>
+            <p><%- cap.conteudo.replace(/\n/g, '<br>') %></p>
+          </div>
+        <% }) %>
+      </div>
     </div>
 
-    <a href="/<%= origem === 'profile' ? 'profile' : '' %>" class="btn-voltar">
-        Voltar ao <%= origem === 'profile' ? 'Perfil' : 'Início' %>
+    <a href="/<%= origem === 'profile' ? 'profile' : origem === 'public_profile' ? usuario : '' %>" class="btn-voltar">
+      Voltar ao <%= origem === 'profile' ? 'Perfil' : origem === 'public_profile' ? 'Perfil' : 'Início' %>
     </a>
+    
   </section>
 </main>
 

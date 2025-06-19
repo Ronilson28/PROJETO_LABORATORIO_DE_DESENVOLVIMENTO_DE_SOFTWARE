@@ -2,10 +2,6 @@
   <section class="login-section">
     <h2>Entrar na Conta</h2>
 
-    <% if (mensagemErro) { %>
-      <p class="erro"><%= mensagemErro %></p>
-    <% } %>
-
     <form id="loginForm" action="/login" method="POST">
       <input type="email" name="email" placeholder="Endereço de e-mail" required>
       <input type="password" name="senha" placeholder="Senha" required>

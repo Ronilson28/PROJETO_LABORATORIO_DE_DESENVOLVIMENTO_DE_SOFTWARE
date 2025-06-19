@@ -1,22 +1,30 @@
 require('dotenv').config(); // carrega '.env'
 
-var createError = require('http-errors');
 var express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session')
-const mongoose = require('mongoose');
+
+// Importação de Middlewares
+const catchNotFoundPage = require('./middlewares/catch_not_found_pages');
+const errorHandling = require('./middlewares/error_handling');
+const sessionConfig = require('./middlewares/session_config');
+const sessionToViews = require('./middlewares/session_to_views');
+const showHeader = require('./middlewares/show_header');
+const putMensagemErro = require('./middlewares/put_mensagemErro');
 
 // Importação das rotas
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
 var signUpRouter = require('./routes/sign_up');
 var logoutRouter = require('./routes/logout');
-var profileRouter = require('./routes/profile');
 var historiasRouter = require('./routes/historias');
 //var categoriaProfile = require('./routes/categoriaProfile');
+var profileRouter = require('./routes/profile');
+var publicProfileRouter = require('./routes/public_profile');
+const conectarMongo = require('./config/database');
+
 var app = express();
 
 // Configuração do mecanismo de visualização (EJS com layouts)
@@ -25,40 +33,23 @@ app.set('layout', 'layout');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Conexão com o Banco de Dados MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("✅ Conectado ao MongoDB com sucesso!"))
-  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
-
-// Configuração do middleware de sessão
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // True se estiver usando HTTPS
-}));
-
-// Middleware para processar requisições com dados codificados na URL
-app.use(express.urlencoded({ extended: true }));
+// Conexão com o Banco de Dados MongoDB 
+conectarMongo();
 
 app.use(logger('dev')); // Middleware de logging
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true })); // Middleware para processar requisições com dados codificados na URL
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'))); // Middleware para servir arquivos estáticos da pasta 'public'
 
+// Configuração do middleware de sessão
+app.use(sessionConfig);
 // Middleware para tornar a sessão disponível para todas as views
-app.use((req, res, next) => {
-  res.locals.session = req.session;
-  next();
-});
-
+app.use(sessionToViews);
 // Middleware para esconder o header em páginas específicas. Define quando o cabeçalho será exibido ou ocultado.
-app.use((req, res, next) => {
-  const noHeaderPaths = ['/login', '/sign_up'];
-  res.locals.showHeader = !noHeaderPaths.includes(req.path);
-  next();
-});
+app.use(showHeader);
+// Torna 'mensagemErro' disponível em todas as views
+app.use(putMensagemErro);
 
 // Registro das rotas principais
 app.use('/', indexRouter);
@@ -68,20 +59,11 @@ app.use('/logout', logoutRouter);
 app.use('/profile', profileRouter);
 app.use('/historias', historiasRouter);
 //ape.use('/categorias', categoriaProfile);
+app.use('/', publicProfileRouter);
 
-// Middleware para capturar erros 404 (rota não encontrada)
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
+// Middleware para capturar erros 404 (página não encontrada)
+app.use(catchNotFoundPage);
 // Middleware de tratamento de erros
-app.use(function(err, req, res, next) {
-  // Define variáveis locais de erro, apenas no ambiente de desenvolvimento
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // Renderiza a página de erro
-  res.status(err.status || 500);
-  res.render('error',  { title: 'Erro no sistema' });
-});
+app.use(errorHandling);
 
 module.exports = app;

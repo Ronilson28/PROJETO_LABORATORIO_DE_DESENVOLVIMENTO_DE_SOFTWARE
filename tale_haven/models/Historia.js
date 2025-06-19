@@ -21,7 +21,7 @@ const historiaSchema = new mongoose.Schema({
   capitulo: { type: String, default: '' },
   resumo: { type: String, default: '' },
   // Campos adicionais
-  //capitulos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Capitulo' }],
+  capitulos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Capitulo' }],
   //curtidas: { type: Number, default: 0 },
   //visualizacoes: { type: Number, default: 0 },
   //comentarios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comentario' }],
@@ -31,7 +31,7 @@ const historiaSchema = new mongoose.Schema({
   //nota: Number, comentario: String
   //}],
   //slug: String
-});
+}, {timestamps: true});
 
 // Middleware para atualizar o campo atualizado_em antes de salvar
 historiaSchema.pre('save', function (next) {

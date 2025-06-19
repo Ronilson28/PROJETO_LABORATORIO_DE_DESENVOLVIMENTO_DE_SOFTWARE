@@ -3,8 +3,9 @@ const destaque = document.querySelector('.destaque-banner');
 if (destaque) {
   destaque.addEventListener('click', () => {
     const id = destaque.dataset.id;
+    const autorUser = null;
     if (id) {
-      window.location.href = `/historias/${id}/ler?from=index`;
+      window.location.href = `/historias/${id}/ler?from=index&title=Tale Haven&user=${autorUser}`;
     }
   });
 }
@@ -13,8 +14,9 @@ if (destaque) {
 document.querySelectorAll('.card-historia').forEach(card => {
   card.addEventListener('click', () => {
     const id = card.dataset.id;
+    const autorUser = null;
     if (id) {
-      window.location.href = `/historias/${id}/ler?from=index`;
+      window.location.href = `/historias/${id}/ler?from=index&title=Tale Haven&user=${autorUser}`;
     }
   });
 });

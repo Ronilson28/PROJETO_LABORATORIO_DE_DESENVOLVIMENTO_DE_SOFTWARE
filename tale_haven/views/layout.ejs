@@ -12,6 +12,9 @@
 <% } %>
 
 <body>
+  <% if (mensagemErro) { %>
+    <p class="erro"><%= mensagemErro %></p>
+  <% } %>
   <%- body %> <!-- Conteúdo das outras views -->
 </body>
 

@@ -1,5 +1,6 @@
   <main class="perfil-content">
     <h1>Perfil do Autor</h1>
+
     <!-- Cabeçalho do autor -->
     <section class="cabecalho-autor">
       <div class="foto-perfil">
@@ -38,6 +39,11 @@
         </div>
 
         <p id="data-criacao"><strong>Criado em:</strong> <%= autor.dataCriacao.toLocaleDateString() %></p>
+        
+        <div class="contagem-seguidores">
+          <p><strong><%= autor.seguidores.length %></strong> seguidores</p>
+          <p><strong><%= autor.seguindo.length %></strong> seguindo</p>
+        </div>
 
         <div class="acoes-perfil">
           <a href="/profile/editar">
@@ -47,7 +53,6 @@
 
       </div>
 
-      </div>
     </section>
 
     <section class="nova-historia">
@@ -65,48 +70,24 @@
                 <img src="<%= historia.capa_url %>" alt="Capa da História" class="imagem-capa" />
                 <div class="historia-info">
                   <h3><%= historia.titulo %></h3>
-                  <p><strong>Genêro(s):</strong> <%= historia.genero %></p>
-                  <p><strong>Data de Publicação:</strong> <%= historia.data_criacao.toLocaleDateString() %></p>
-                  <p><strong>Resumo:</strong> <%= historia.resumo %></p>
-                  <p><strong>Última Atualização</strong> <%= historia.atualizado_em.toLocaleDateString() %> </p>
+                  <p id="genero-publico"><%= historia.genero.join('; ') %></p>
+                  <p><strong>Publicação em: </strong> <%= historia.data_criacao.toLocaleDateString() %></p>
+                  <p id="resumo-publico"><%= historia.resumo %></p>
+                  <p><%= historia.status %></p>
+                  <p><strong>Última Atualização:</strong> <%= historia.atualizado_em.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' }) %></p>
                 </div>
-              </div>
-              <div class="acoes-historia">
-                <button class="btn-ler-historia" data-id="<%= historia._id %>">Ler</button>
-                <button class="btn-editar-historia" data-id="<%= historia._id %>">Editar</button>
-                <button class="btn-excluir-historia">Excluir</button>
+                <div class="acoes-historia">
+                  <button class="btn-ler-historia" data-id="<%= historia._id %>" data-nome="<%= autor.nome %>" data-usuario="<%= autor.usuario %>">Ler</button>
+                  <button class="btn-editar-historia" data-id="<%= historia._id %>">Editar</button>
+                  <button class="btn-excluir-historia" data-id="<%= historia._id %>">Excluir</button>
+                </div>
               </div>
             </li>
         <% }); %>
       <% } else { %>
-        <li><em>Você ainda não publicou nenhuma história.</em></li>
+        <li class="sem-historias"><em>Você ainda não publicou nenhuma história.</em></li>
       <% } %>
     </section>
   </main>
-  
-  <!-- Modal para Adicionar Nova História ->
-  <div id="modal-nova-historia" class="modal-nova-historia">
-    <div class="modal-content">
-      <span id="fechar-modal" class="fechar">&times;</span>
-      <h2>Adicionar Nova História</h2>
-      
-      <label for="titulo">Título da História:</label>
-      <input type="text" id="titulo" placeholder="Digite o título da história"/>
-      
-      <label for="categoria">Selecione os Genêros:</label>
-      <div class="categorias">
-        <button class="categoria-btn" data-categoria="Ação">Ação</button>
-        <button class="categoria-btn" data-categoria="Romance">Romance</button>
-        <button class="categoria-btn" data-categoria="Ficção Científica">Ficção Científica</button>
-        <button class="categoria-btn" data-categoria="Fantasia">Fantasia</button>
-        <button class="categoria-btn" data-categoria="Mistério">Mistério</button>
-      </div>
-
-      <label for="nova-categoria">Ou crie uma novo gênero:</label>
-      <input type="text" id="nova-categoria" placeholder="Digite uma nova categoria" />
-
-      <button id="salvar-historia" class="btn-salvar-historia">Criar História</button>
-    </div>
-  </div-->
 
   <script src="/javascripts/profile.js"></script>

@@ -19,7 +19,9 @@ const autorSchema = new mongoose.Schema({
   },
   preferenciasGenero: { type: [String], default: [] },
   dataCriacao: { type: Date, default: Date.now },
-  historias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Historia' }]
+  historias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Historia' }],
+  seguindo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Autor' }],
+  seguidores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Autor' }]
 }, { timestamps: true });
 
 // Hash da senha antes de salvar

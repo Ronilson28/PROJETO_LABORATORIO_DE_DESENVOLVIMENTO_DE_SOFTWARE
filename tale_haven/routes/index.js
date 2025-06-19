@@ -6,7 +6,7 @@ var router = express.Router();
 // Rota GET para a página inicial
 // Exibe a história em destaque e as últimas 10 histórias de cada categoria
 router.get('/', async (req, res) => {
-  console.log('Sessão atual:', req.session);
+  console.log('Autor na sessão atual:', req.session.autor || 'Usuário não autenticado');
   try {
     const total = await Historia.countDocuments();
     const random = Math.floor(Math.random() * total);
@@ -28,15 +28,22 @@ router.get('/', async (req, res) => {
         return { nome: cat, historias };
       })
     );
+    
+    const mensagemErro = req.session.mensagemErro || null;
+    req.session.mensagemErro = null;
 
     res.render('index', {
-      title: 'Portal de Histórias',
+      title: 'Tale Haven',
+      mensagemErro: mensagemErro,
       destaque,
       categorias: categoriasComHistorias,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Erro ao carregar página inicial.");
+    res.status(500).render('index', {
+      title: 'Tale Haven',
+      mensagemErro: 'Erro ao carregar página inicial.'
+  });
   }
 });
 

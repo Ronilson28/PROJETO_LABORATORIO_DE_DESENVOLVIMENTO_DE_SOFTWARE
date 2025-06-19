@@ -1,19 +1,18 @@
 <main class="pagina-inicial">
   <section class="destaque">
     <h1>Destaque</h1>
+
     <% if (destaque) { %>
       <div class="destaque-banner" data-id="<%= destaque._id %>">
         <img src="<%= destaque.capa_url %>" alt="<%= destaque.titulo %>">
-        <div class="info">
+        <div class="info-destaque">
           <h2><%= destaque.titulo %></h2>
-          <p>Autor: <%= destaque.id_autor.nome %></p>
-          <p>@<%= destaque.id_autor.usuario %></p>
-          <p><%= destaque.resumo %></p>
-          <p>Data de Criação: <%= new Date(destaque.data_criacao).toLocaleDateString() %></p>
+          <p id="destaque-autor">Escrito por: <i><%= destaque.id_autor.nome %></i></p>
+          <p id="destaque-usuario">@<%= destaque.id_autor.usuario %></p>
+          <p id="destaque-resumo"><%= destaque.resumo %></p>
+          <p id="destaque-genero"><%= destaque.genero.join('; ') %></p>
         </div>
       </div>
-    <% } else { %>
-      <p>Não há histórias em destaque no momento.</p>
     <% } %>
   </section>
 
@@ -23,11 +22,14 @@
       <div class="carrossel">
         <% categoria.historias.forEach(function(historia) { %>
           <div class="card-historia" data-id="<%= historia._id %>">
-            <img src="<%= historia.capa_url %>" alt="<%= historia.titulo %>">
-            <h3><%= historia.titulo %></h3>
-            <p>@<%= historia.id_autor.usuario %></p>
-            <p><%= new Date(historia.data_criacao).toLocaleDateString() %></p>
-            <p><%= historia.status %></p>
+            <div class="card-img">
+              <img src="<%= historia.capa_url %>" alt="<%= historia.titulo %>">
+            </div>
+            <div class="info-card">
+              <h3 id="info-card-titulo"><%= historia.titulo %></h3>
+              <p id="info-card-usuario">@<%= historia.id_autor.usuario %></p>
+              <p id="info-card-status"><%= historia.status %></p>
+            </div>
           </div>
         <% }) %>
       </div>

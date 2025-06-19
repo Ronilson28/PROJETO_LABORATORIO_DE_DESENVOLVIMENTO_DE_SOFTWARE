@@ -1,35 +1,37 @@
 <main class="main-nova-historia">
     <section class="nova-historia-section">
         <h1>Nova História</h1>
-    
-        <% if (mensagemErro) { %>
-        <p class="erro"><%= mensagemErro %></p>
-        <% } %>
 
         <!--<form id="novaHistoriaForm" action="/historias/nova-historia" method="POST" enctype="multipart/form-data">-->
-        <form id="novaHistoriaForm" action="/historias/nova-historia" method="POST">
+        <form id="novaHistoriaForm" action="/historias/nova-historia" method="POST" enctype="multipart/form-data">
             <!-- editar capa-->
             <div class="editar-capa">
                 <div class="capa-contain"  onclick="ampliarImagem(this)">
                     <img src="/images/book-cover-default.jpg" alt="Capa da História" title="Capa da História" >
                 </div>
                 <label for="capa_url">Selecionar capa</label>
-                <!--<input type="file" name="capa_url" id="capa_url" accept="image/*">-->
+                <input type="file" name="capa_url" id="capa_url" accept="image/*">
             </div>
             <label for="titulo">Título:</label>
             <input type="text" name="titulo" placeholder="Título da História" required>
+            <label for="genero">Genêro (se mais de um, separar por vírgula):</label>
+            <input type="text" name="genero" placeholder="Ex.: Ação, Aventura, Fantasia" required>
             <label for="resumo">Resumo:</label>
             <textarea name="resumo" placeholder="Resumo da História" required></textarea>
-            <label for="genero">Genêros (separados por vírgula):</label>
-            <input type="text" name="genero" placeholder="Ex.: Ação, Aventura, Fantasia" required>
-            <label for="capitulo">Conteúdo:</label>
-            <textarea name="capitulo" placeholder="Conteúdo da História" required></textarea>
-            <button type="submit" class="btn-nova-historia">Publicar História</button>
+            <label for="capitulos">Capítulos:</label>
+            <div id="capitulos-container">
+                <div class="capitulo" data-index="1">
+                    <input type="text" name="capitulos[0][titulo]" value="Capítulo 1" placeholder="Título do Capítulo 1" required>
+                    <textarea name="capitulos[0][conteudo]" placeholder="Conteúdo do Capítulo 1" required></textarea>
+                </div>
+            </div>
+            <button type="button" class="btn-adicionar-capitulo" onclick="adicionarCapitulo()">Adicionar Capítulo</button>
+            <div class="acoes-nova-historia">
+                <button type="submit" class="btn-nova-historia">Publicar</button>
+                <button type="button" class="btn-cancelar-nova-historia">Cancelar</button>
+            </div>
         </form>
-        
-        <p class="voltar-perfil"><a href="/profile">Voltar ao Perfil</a></p>
     </section>
-    
 </main>
-
+    
 <script src="/javascripts/nova_historia.js"></script>
