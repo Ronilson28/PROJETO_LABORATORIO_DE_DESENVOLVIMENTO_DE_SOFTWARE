@@ -9,10 +9,11 @@ var logger = require('morgan');
 // Importação de Middlewares
 const catchNotFoundPage = require('./middlewares/catch_not_found_pages');
 const errorHandling = require('./middlewares/error_handling');
-const sessionConfig = require('./middlewares/session_config');
+const sessionConfig = require('./config/session');
 const sessionToViews = require('./middlewares/session_to_views');
 const showHeader = require('./middlewares/show_header');
 const putMensagemErro = require('./middlewares/put_mensagemErro');
+const conectarMongo = require('./config/database');
 
 // Importação das rotas
 var indexRouter = require('./routes/index');
@@ -20,10 +21,10 @@ var loginRouter = require('./routes/login');
 var signUpRouter = require('./routes/sign_up');
 var logoutRouter = require('./routes/logout');
 var historiasRouter = require('./routes/historias');
-//var categoriaProfile = require('./routes/categoriaProfile');
+var categorias = require('./routes/categorias');
 var profileRouter = require('./routes/profile');
 var publicProfileRouter = require('./routes/public_profile');
-const conectarMongo = require('./config/database');
+var configuracaoRouter = require('./routes/configuracao');
 
 var app = express();
 
@@ -58,8 +59,9 @@ app.use('/sign_up', signUpRouter);
 app.use('/logout', logoutRouter);
 app.use('/profile', profileRouter);
 app.use('/historias', historiasRouter);
-//ape.use('/categorias', categoriaProfile);
+app.use('/categorias', categorias);
 app.use('/', publicProfileRouter);
+app.use('/configuracao', configuracaoRouter);
 
 // Middleware para capturar erros 404 (página não encontrada)
 app.use(catchNotFoundPage);

@@ -50,15 +50,33 @@ body {
   text-decoration: none;
 }
 
-.navbar nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 15px;
+.menu-contain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.navbar nav a:hover {
+.site-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.site-nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.site-nav a:hover {
   font-weight: 600;
   text-decoration: underline;
+}
+
+.menu-icon {
+    display: none;
+}
+
+.menu-icon:hover {
+    font-weight: 600;
 }
 
 /* -------------------------------------------------------------------------------------------------------- */
@@ -214,7 +232,7 @@ textarea {
 
 /* -------------------------------------------------------------------------------------------------------- */
 /* Pagina Inicial */
-.pagina-inicial {
+.pagina-inicial, .main-categoria, .main-categorias {
   padding: 20px;
   margin-top: 20px;
   height: 100%;
@@ -289,16 +307,18 @@ textarea {
   gap: 10px;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  border-radius: 20px;
 }
 
 .card-historia {
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 250px;
+  max-width: 250px;
   flex-shrink: 0;
   overflow: hidden;
   flex-direction: column;
   text-align: center;
   cursor: pointer;
+  border-radius: 20px;
 }
 
 .card-historia:hover {
@@ -314,13 +334,19 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit:fill;
-  border-radius: 15px 15px 0 0;
+}
+
+.info-card, .info-card-gen {
+  background-color: #ffffff20;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
 }
 
 .info-card {
-  background-color: #ffffff20;
-  border-radius: 0 0 15px 15px;
-  padding: 2px;
+  min-height: 120px;
 }
 
 .info-card h3 {
@@ -338,25 +364,21 @@ textarea {
 .perfil-content {
   padding: 20px;
   margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
-/*.cabecalho-autor {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 50px;
-}*/
-
 .cabecalho-autor {
-  padding: 20px;
   background-color: #ffffff20;
   display: flex;
-  flex-direction: column;
+  padding: 20px;
+  align-items: center;
   border-radius: 25px;
-  gap: 10px;
+  margin: 0 50px;
 }
 
 .foto-perfil {
+  width: 50%;
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -364,17 +386,19 @@ textarea {
 }
 
 .foto-perfil img {
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .info-perfil {
   display: flex;
   color: #ffffff;
   flex-direction: column;
-  /*align-items: center*/;
+  justify-content: center;
   gap: 8px;
+  word-break: break-word;
 }
 
 .nome-seguir {
@@ -394,7 +418,7 @@ textarea {
 }
 
 #usuario {
-  color: #efc6ffa5;
+  color: hsla(0, 0%, 0%, 0.6);
 }
 
 .editar-perfil-section h3 {
@@ -436,11 +460,22 @@ textarea {
 .contagem-seguidores {
   display: flex;
   align-items: center;
-  margin-left: 10px;
+  margin-top: 10px;
+  margin-left: 2px;
   gap: 40px;
 }
 
+#listar-seguidores:hover {
+  text-decoration: underline;
+}
+
+#listar-seguidores a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
 .acoes-perfil {
+  display: flex;
   margin-top: 10px;
 }
 
@@ -449,7 +484,7 @@ textarea {
   color: #000000;
   padding: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
 }
@@ -461,15 +496,17 @@ textarea {
 }
 
 .nova-historia {
-  background-color: #ffffff20;
-  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 25px;
-  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  gap: 20px;
 }
 
 #btn-nova-historia {
   background-color: #ffffff;
-  min-height: 45px;
   color: #000000;
   padding: 8px;
   border: none;
@@ -484,32 +521,16 @@ textarea {
   font-weight: 600;
 }
 
-#total-historias {
-  margin-top: 10px;
-  margin-left: 5px;
-  font-size: 14px;
-  color: #ffffff;
-}
-
-#total-historias span {
-  font-weight: 600;
-}
-
-.historias-publicadas {
-  background-color: #ffffff20;
+.historias-publicadas, .historias-curtidas {
   padding: 20px;
-  border-radius: 25px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.historias-publicadas h2 {
   color: #ffffff;
 }
 
-.historias-publicadas ul {
+.historias-publicadas ul, .historias-curtidas ul {
   width: 100%;
   display: flex;
   list-style: none;
@@ -517,15 +538,15 @@ textarea {
   scroll-behavior: smooth;
   scrollbar-width: none;
   gap: 10px;
+  border-radius: 20px;
 }
 
-.historias-publicadas li {
-  width: 250px;
+.historias-publicadas li, .historias-curtidas li {
+  width: 300px;
   min-width: 250px;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /*background-color: #ffffff*/;
 }
 
 .historia-container {
@@ -558,13 +579,12 @@ textarea {
 }
 
 #genero-publico {
-  margin-top: 10px;
+  margin-top: 5px;
   font-size: 14px;
 }
 
 .historia-info p {
   font-size: 14px;
-  color: #000000;
 }
 
 #resumo-publico {
@@ -642,9 +662,143 @@ textarea {
 
 .sem-historias {
   display: flex;
+  margin-left: 10px;
   justify-content: center;
   align-items: center;
   color: #ffffff;
+}
+
+/* Modal de Seguidores/Seguindo */
+.seguidores-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: #000000a6;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-conteudo {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 400px;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+.fechar-modal-seguidores {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.fechar-modal-seguidores:hover {
+  color: #ff0000;
+}
+
+#modal-seguidores-titulo {
+  color: #000000d9;
+  text-align: center;
+}
+
+.lista-autores {
+  list-style: none;
+  padding: 0;
+}
+
+.lista-autores li {
+  margin: 10px 0;
+}
+
+.lista-autores li a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.lista-autores li a img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.lista-autores li a strong {
+  margin: 0 2px;
+}
+
+.lista-autores li a span {
+  color: #000000bf;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-curtir, .form-descurtir, .form-curtir-p {
+  display: inline-block;
+}
+
+.form-descurtir, .form-curtir-p {
+  position:relative;
+  align-self: flex-end;
+  right: 75px;
+}
+
+.btn-curtir, .btn-descurtir, .btn-curtir-p {
+  background: transparent;
+  display: flex;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+
+.btn-curtir {
+  color: #666;
+  font-size: 16px;
+  gap: 6px;
+  padding: 10px 0;
+}
+
+.btn-descurtir, .btn-curtir-p {
+  position:absolute;
+  padding: 25px 0 0;
+}
+
+.btn-descurtir.curtido, .btn-curtir-p, .btn-curtir-p.curtido {
+  background: transparent;
+  color: #e74c3c80;
+}
+
+.btn-curtir i, .btn-descurtir i, .btn-curtir-p i {
+  transition: color 0.4s ease;
+}
+
+.btn-descurtir i, .btn-curtir-p i {
+  font-size: 25px;
+}
+
+.btn-curtir i {
+  font-size: 20px;
+}
+
+.btn-curtir.curtido, .btn-curtir:hover, .btn-descurtir.curtido:hover, .btn-curtir-p:hover {
+  color: #e74c3c;
+}
+
+.btn-curtir:hover {
+  transform: scale(1.05);
+}
+
+.btn-descurtir.curtido:hover, .btn-curtir-p:hover {
+  transform: scale(1.3);
 }
 
 /* -------------------------------------------------------------------------------------------------------- */
@@ -827,7 +981,7 @@ textarea {
   display: none;
 }
 
-.editar-capa label {
+#labelSelecionarCapa {
   background-color: #ffffff;
   color: #000000;
   padding: 10px;
@@ -837,14 +991,88 @@ textarea {
   font-size: 16px;
 }
 
-.editar-capa label:hover {
+#labelSelecionarCapa:hover {
   background-color: #7c68ee;
   color: #ffffff;
   font-weight: 600;
 }
 
+.modelos-capas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modelo-capa {
+  width: 140px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.modelo-capa:hover {
+  border-color: #007bff;
+}
+
 #novaHistoriaForm label {
   margin-top: 20px;
+}
+
+.generos-container, .select-generos {
+  position: relative;
+}
+
+.generos-select {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+}
+
+.icon-select {
+  margin-right: 2px;
+}
+
+.icon-select:hover {
+  color: #7B68EE;
+}
+
+.generos-options {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 6px;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 1px;
+  z-index: 10;
+  border: 1px solid #000000bf;
+}
+
+.generos-options.hidden {
+  display: none;
+}
+
+.option {
+  margin-top: 8px;
+  margin-left: 8px;
+  align-items: center;
+}
+
+.generos-options input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.generos-options label {
+  margin-left: 5px;
+  color: #000000bf;
+  cursor: pointer;
 }
 
 #capitulos-container {
@@ -977,6 +1205,11 @@ textarea {
 .leitura-autor, .leitura-data {
   font-style: italic;
   color: #666666;
+  text-decoration: none;
+}
+
+.leitura-autor a:hover {
+  color: #313131;
 }
 
 .leitura-resumo, .leitura-conteudo {
@@ -987,6 +1220,77 @@ textarea {
 .leitura-conteudo h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+}
+
+.comentarios {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.comentarios h3 {
+  font-size: 1.3em;
+  margin-bottom: 15px;
+}
+
+.form-comentario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-comentario textarea {
+  resize: vertical;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-comentario button {
+  align-self: flex-end;
+  background-color: #0066cc;
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.95em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-comentario button:hover {
+  background-color: #004f99;
+}
+
+.lista-comentarios {
+  list-style: none;
+  padding-left: 0;
+}
+
+.lista-comentarios li {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 0;
+}
+
+.lista-comentarios li:last-child {
+  border-bottom: none;
+}
+
+.lista-comentarios strong {
+  color: #222;
+}
+
+.lista-comentarios small {
+  display: block;
+  color: #888;
+  font-size: 0.85em;
+  margin-top: 3px;
 }
 
 .btn-voltar {
@@ -1003,6 +1307,92 @@ textarea {
 
 .btn-voltar:hover {
   background-color: #007bff;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* Categorias */
+.main-categoria, .main-categorias {
+  padding: 20px;
+  min-height: 550px;
+}
+
+.categorias-section h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.lista-categorias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.categoria-card {
+  display: block;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.categoria-card:hover {
+  transform: translateY(-4px);
+}
+
+.categoria-conteudo h2 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+}
+
+.categoria-conteudo p {
+  font-size: 0.95rem;
+  color: #666;
+}
+/* -------------------------------------------------------------------------------------------------------- */
+/* Categorias -> Gênero */
+.categoria-section h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.lista-historias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.card-historias-gen {
+  color: #ffffff;
+  text-align: center;
+  min-height: 300px;
+}
+
+.card-historias-gen .card-img img {
+  border-radius: 20px 20px 0 0;
+}
+
+.info-card-gen {
+  border-radius: 0 0 20px 20px;
+}
+
+.info-card-gen h2 {
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.info-card-gen h2 a, .info-card-autor a, .info-card-usuario a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.info-card-resumo {
+  padding: 1px;
+  text-align: justify;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* -------------------------------------------------------------------------------------------------------- */
@@ -1050,94 +1440,6 @@ textarea {
   margin-top: 10px;
 }
 
-.generos-container {
-  width: 460px;
-  position: relative;
-}
-
-.generos-select {
-  display: flex;
-  justify-content: space-between;
-  background-color: #ffffff;
-  color: #000000;
-  padding: 10px;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 6px;
-}
-
-.icon-select {
-  margin-right: 2px;
-}
-
-.icon-select:hover {
-  color: #7B68EE;
-}
-
-.generos-options {
-  position: absolute;
-  background: #ffffff;
-  border-radius: 6px;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  margin-top: 1px;
-  z-index: 10;
-  border: 1px solid #000000bf;
-}
-
-.generos-options.hidden {
-  display: none;
-}
-
-.option {
-  margin-top: 8px;
-  margin-left: 8px;
-  display: flex;
-  align-items: center;
-}
-
-.generos-options input[type="checkbox"] {
-  cursor: pointer;
-}
-
-.generos-options label {
-  margin-left: 5px;
-  color: #000000bf;
-  cursor: pointer;
-}
-
-.add-novos-generos {
-  /*display: flex;
-  justify-content: space-between;
-  align-items: center;*/
-  margin-top: 10px;
-}
-
-#novo-genero {
-  margin-top: 5px;
-  padding: 7px;
-  width: 80%;
-  box-sizing: border-box;
-}
-
-#btn-add-novo {
-  background-color: #ffffff;
-  color: #000000;
-  width: 19%;
-  padding: 8px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-#btn-add-novo:hover {
-  background-color: #7c68ee;
-  color: #ffffff;
-  font-weight: 600;
-}
-
 /* -------------------------------------------------------------------------------------------------------- */
 /* Erro */
 #erro-contain {
@@ -1177,4 +1479,143 @@ textarea {
   max-height: 420px;
   background-color: #ffffff0b;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* Responsividade */
+/* tela de 1200px ou menos */
+@media (max-width: 1200px) {
+
+  /*.cabecalho-autor {
+    flex-wrap: wrap;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    margin: 0 50px;
+    gap: 200px;
+  }
+
+  .foto-perfil {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .foto-perfil img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .info-perfil {
+    display: flex;
+    color: #ffffff;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    word-break: break-word;
+  }*/
+}
+
+/* tela de 1100px ou menos */
+@media (max-width: 1100px) {
+  /**/ 
+}
+
+/* tela de 1000px ou menos */
+@media (max-width: 1000px) {
+  .cabecalho-autor {
+    flex-direction: column;
+    margin: 0 75px;
+  }
+  
+  .foto-perfil img {
+    width: 250px;
+    height: 250px;
+  }
+
+}
+
+/* tela de 900px ou menos */
+@media (max-width: 900px) {
+  /**/
+}
+
+/* tela de 800px ou menos */
+@media (max-width: 800px) {
+  .cabecalho-autor {
+    gap: 10x;
+  }
+}
+
+/* tela de 768px ou menos */
+@media (max-width: 768px) {
+  .site-nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: #fff;
+    padding: 2px;
+    position: absolute;
+    top: 55px; /* ajuste com a altura do seu navbar */
+    right: 2px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    gap: 10px;
+  }
+
+  .site-nav a {
+    padding: 10px;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .site-nav a:hover {
+    color: #6a5acd;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .site-nav.active {
+    display: flex;
+  }
+
+  .menu-icon {
+    width: 100%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cabecalho-autor {
+    flex-direction: column;
+    margin: 0px;
+  }
+
+  .foto-perfil img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .info-perfil {
+    max-width: 100%;
+  }
+
+  .contagem-seguidores {
+    gap: 10px;
+  }
+
+  .acoes-perfil {
+    justify-content: center;
+  }
 }

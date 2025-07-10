@@ -1,19 +1,19 @@
-document.getElementById('capa_url').addEventListener('change', function(event) {
-    const input = event.target;
-    const file = input.files[0];
+function selecionarModeloCapa(caminho) {
+    document.getElementById('preview-capa').src = caminho;
+    document.getElementById('capa_selecionada').value = caminho;
+    document.getElementById('capa_url').value = ""; // Limpa input de upload
+}
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        const imgPreview = document.querySelector('.capa-contain img');
-        imgPreview.src = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
+document.getElementById('capa_url').addEventListener('change', function (e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('preview-capa').src = e.target.result;
+            document.getElementById('capa_selecionada').value = ""; // Limpa escolha de modelo
+        };
+        reader.readAsDataURL(e.target.files[0]);
     }
 });
-
 
 let contadorCapitulo = document.querySelectorAll('#capitulos-container .capitulo').length;;
 
@@ -123,4 +123,29 @@ document.querySelector('.btn-cancelar-nova-historia').addEventListener('click', 
     if (confirm('Tem certeza que deseja cancelar a edição da história?')) {
         window.location.href = '/profile'; // Redireciona para o perfil do usuário
     }
+});
+
+const dropdownSelect = document.getElementById('generos-select');
+const dropdownOptions = document.getElementById('generos-options');
+
+// Atualiza o texto do dropdown com os gêneros selecionados
+function atualizarTextoSelecionado() {
+  const selecionados = [...dropdownOptions.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.value);
+  dropdownSelect.textContent = selecionados.length > 0 ? selecionados.join('; ') : 'Selecione os gêneros...';
+}
+
+// Atualiza texto ao clicar nos checkboxes
+dropdownOptions.addEventListener('change', atualizarTextoSelecionado);
+
+// Abre e fecha o dropdown
+dropdownSelect.addEventListener('click', () => {
+    atualizarTextoSelecionado();
+    dropdownOptions.classList.toggle('hidden');
+});
+
+// Fecha o dropdown ao clicar fora
+document.addEventListener('click', (e) => {
+  if (!dropdownSelect.contains(e.target) && !dropdownOptions.contains(e.target)) {
+    dropdownOptions.classList.add('hidden');
+  }
 });

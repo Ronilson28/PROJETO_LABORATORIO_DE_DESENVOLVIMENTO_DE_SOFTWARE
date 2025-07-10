@@ -17,7 +17,7 @@ const historiaSchema = new mongoose.Schema({
     default: 'Em andamento' 
   },
   data_criacao: { type: Date, default: Date.now },
-  capa_url: {type: String, default: '/images/book-cover-default.jpg'},
+  capa_url: {type: String, default: '/images/modelos-capas/Modelo_capa_url-01.jpg'},
   capitulo: { type: String, default: '' },
   resumo: { type: String, default: '' },
   // Campos adicionais
@@ -31,7 +31,7 @@ const historiaSchema = new mongoose.Schema({
   //nota: Number, comentario: String
   //}],
   //slug: String
-}, {timestamps: true});
+});
 
 // Middleware para atualizar o campo atualizado_em antes de salvar
 historiaSchema.pre('save', function (next) {

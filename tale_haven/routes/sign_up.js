@@ -1,13 +1,25 @@
 const express = require('express');
 var router = express.Router();
 const Autor = require('../models/Autor');
+const Genero = require('../models/Genero');
+
+const nomesReservados = ['login', 'logout', 'profile', 'sign_up', 'admin', 'moderacao', 'categorias', 'historias'];
 
 // Rota GET para exibir o formulário de cadastro
-router.get('/', (req, res) => {
-  res.render('sign_up', {
-    title: 'Cadastre-se - Portal de Histórias',
-    mensagemErro: null
-  });
+router.get('/', async (req, res) => {
+  try {
+    const generos = await Genero.find({ ativo: true }).sort('nome');
+    res.render('sign_up', {
+      title: 'Cadastre-se',
+      generos
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('login', {
+      title: 'Login - Tale  Haven',
+      mensagemErro: 'Erro ao carregar a página de cadastro. Tente novamente'
+    });
+  }
 });
 
 // Rota POST para processar o cadastro de autor
@@ -18,7 +30,8 @@ router.post('/', async (req, res) => {
   if (!nome || !email || !confirmEmail || !senha || !confirmSenha) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'Todos os campos são obrigatórios'
+      mensagemErro: 'Todos os campos são obrigatórios',
+      generos: []
     });
   }
 
@@ -26,7 +39,8 @@ router.post('/', async (req, res) => {
   if (email !== confirmEmail) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'Os e-mails não coincidem'
+      mensagemErro: 'Os e-mails não coincidem',
+      generos: []
     });
   }
 
@@ -34,7 +48,8 @@ router.post('/', async (req, res) => {
   if (senha !== confirmSenha) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'As senhas não coincidem'
+      mensagemErro: 'As senhas não coincidem',
+      generos: []
     });
   }
 
@@ -43,7 +58,8 @@ router.post('/', async (req, res) => {
   if (!emailRegex.test(email)) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'Formato de e-mail inválido'
+      mensagemErro: 'Formato de e-mail inválido',
+      generos: []
     });
   }
 
@@ -51,7 +67,8 @@ router.post('/', async (req, res) => {
   if (senha.length < 8) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'A senha deve ter pelo menos 8 caracteres'
+      mensagemErro: 'A senha deve ter pelo menos 8 caracteres',
+      generos: []
     });
   }
   
@@ -60,7 +77,16 @@ router.post('/', async (req, res) => {
   if (!usuarioRegex.test(usuario)) {
     return res.render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'Nome de usuário inválido! Exemplos válidos: "username123", "user.name", "user_name", "_username"'
+      mensagemErro: 'Nome de usuário inválido! Exemplos válidos: "username123", "user.name", "user_name", "_username"',
+      generos: []
+    });
+  }
+
+  if (nomesReservados.includes(usuario)) {
+    return res.render('sign_up', {
+      title: 'Cadastre-se - Portal de Histórias',
+      mensagemErro: 'Nome de usuário não permitido',
+      generos: []
     });
   }
 
@@ -70,9 +96,11 @@ router.post('/', async (req, res) => {
   // Verifica se preferenciasGenero foi fornecido e é um array ou string
   if (preferenciasGenero) {
     if (Array.isArray(preferenciasGenero)) {
-      preferencias = preferenciasGenero.map(str => str.trim());//.filter(str => str !== '');
+      preferencias = preferenciasGenero.map(str => str.trim()).filter(str => str !== '');
     } else {
-      preferencias = [preferenciasGenero.trim()]; // caso tenha só um
+      // caso tenha só um
+      const valor = preferenciasGenero.trim();
+      if (valor) preferencias = [valor];
     }
   }
   
@@ -82,14 +110,18 @@ router.post('/', async (req, res) => {
     if (autorExistente) {
       return res.render('sign_up', {
         title: 'Cadastre-se - Portal de Histórias',
-        mensagemErro: 'Este e-mail já está cadastrado.' });
+        mensagemErro: 'Este e-mail já está cadastrado.',
+        generos: []
+      });
     }
 
     const nomeUsuarioExistente = await Autor.findOne({ usuario });
     if (nomeUsuarioExistente) {
       return res.render('sign_up', {
         title: 'Cadastre-se - Portal de Histórias',
-        mensagemErro: 'Este nome de usuário já está em uso.' });
+        mensagemErro: 'Este nome de usuário já está em uso.',
+        generos: []
+      });
     }
 
     // Cria um novo autor
@@ -110,7 +142,8 @@ router.post('/', async (req, res) => {
     console.error('❌ Erro ao cadastrar autor:', err);
     res.status(500).render('sign_up', {
       title: 'Cadastre-se - Portal de Histórias',
-      mensagemErro: 'Erro interno ao processar o cadastro. Tente novamente mais tarde.'
+      mensagemErro: 'Erro interno ao processar o cadastro. Tente novamente.',
+      generos: []
     });
   }
 });

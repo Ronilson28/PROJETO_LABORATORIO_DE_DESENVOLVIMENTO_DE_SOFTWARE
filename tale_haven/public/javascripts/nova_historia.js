@@ -1,16 +1,17 @@
-document.getElementById('capa_url').addEventListener('change', function(event) {
-    const input = event.target;
-    const file = input.files[0];
+function selecionarModeloCapa(caminho) {
+    document.getElementById('preview-capa').src = caminho;
+    document.getElementById('capa_selecionada').value = caminho;
+    document.getElementById('capa_url').value = ""; // Limpa input de upload
+}
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        const imgPreview = document.querySelector('.capa-contain img');
-        imgPreview.src = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
+document.getElementById('capa_url').addEventListener('change', function (e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('preview-capa').src = e.target.result;
+            document.getElementById('capa_selecionada').value = ""; // Limpa escolha de modelo
+        };
+        reader.readAsDataURL(e.target.files[0]);
     }
 });
 
@@ -79,20 +80,29 @@ document.addEventListener('mouseout', function (e) {
 });
 
 // Evento para publicar a nova história
-document.querySelector('.btn-nova-historia').addEventListener('submit', (e) => {
-    const titulo = document.querySelector('input[name="titulo"]').value.trim();
-    const genero = document.querySelector('input[name="genero"]').value.trim();
-    const resumo = document.querySelector('textarea[name="resumo"]').value.trim();
-    const capitulos = Array.from(document.querySelectorAll('#capitulos-container .capitulo')).map(cap => ({
-        titulo: cap.querySelector('input').value.trim(),
-        conteudo: cap.querySelector('textarea').value.trim()
-    }));
+document.getElementById('novaHistoriaForm').addEventListener('submit', function (e) {
+  const titulo = document.querySelector('input[name="titulo"]').value.trim();
+  const resumo = document.querySelector('textarea[name="resumo"]').value.trim();
+  const capitulos = Array.from(document.querySelectorAll('#capitulos-container .capitulo')).map(cap => ({
+    titulo: cap.querySelector('input[type="text"]').value.trim(),
+    conteudo: cap.querySelector('textarea').value.trim()
+  }));
 
-    if (!titulo || !genero || !resumo || capitulos.some(cap => !cap.titulo || !cap.conteudo)) {
-        e.preventDefault();
-        alert('Por favor, preencha todos os campos obrigatórios.');
-        return;
-    }
+  const generosSelecionados = Array.from(document.querySelectorAll('input[name="genero"]:checked'));
+
+  // VALIDAÇÃO
+  if (!titulo || !resumo || capitulos.some(cap => !cap.titulo || !cap.conteudo)) {
+    alert('Por favor, preencha todos os campos obrigatórios.');
+    e.preventDefault();
+    return;
+  }
+
+  if (generosSelecionados.length === 0) {
+    alert('Por favor, selecione pelo menos um gênero.');
+    e.preventDefault();
+    return;
+  }
+  // Se tudo estiver ok, o formulário é enviado normalmente
 });
 
 // Cancelar a criação da nova história
@@ -101,3 +111,27 @@ document.querySelector('.btn-cancelar-nova-historia').addEventListener('click', 
         window.location.href = '/profile'; // Redireciona para o perfil do usuário
     }
 });
+
+const dropdownSelect = document.getElementById('generos-select');
+const dropdownOptions = document.getElementById('generos-options');
+
+// Abre e fecha o dropdown
+dropdownSelect.addEventListener('click', () => {
+  dropdownOptions.classList.toggle('hidden');
+});
+
+// Fecha o dropdown ao clicar fora
+document.addEventListener('click', (e) => {
+  if (!dropdownSelect.contains(e.target) && !dropdownOptions.contains(e.target)) {
+    dropdownOptions.classList.add('hidden');
+  }
+});
+
+// Atualiza o texto do dropdown com os gêneros selecionados
+function atualizarTextoSelecionado() {
+  const selecionados = [...dropdownOptions.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.value);
+  dropdownSelect.textContent = selecionados.length > 0 ? selecionados.join('; ') : 'Selecione os gêneros...';
+}
+
+// Atualiza texto ao clicar nos checkboxes
+dropdownOptions.addEventListener('change', atualizarTextoSelecionado);

@@ -3,7 +3,11 @@ const router = express.Router();
 const Autor = require('../models/Autor');
 const Historia = require('../models/Historia');
 const Capitulo = require('../models/Capitulo');
+const Genero = require('../models/Genero');
+const Comentario = require('../models/Comentario');
+const Interacao = require('../models/Interacao');
 const upload = require('../middlewares/upload');
+const mongoose = require('mongoose');
 const verificarAutenticacao = require('../middlewares/auth');
 
 // Visualização da História
@@ -13,13 +17,33 @@ router.get('/:id/ler', async (req, res) => {
   const usuario = req.query.user;
   
   try {
-    const historia = await Historia.findById(req.params.id).populate('id_autor').populate('capitulos');
+    const capitulo = await Capitulo.findById(req.params.id).populate({ path: 'comentarios', populate: { path: 'autor', select: 'nome' } });
+
+    const historia = await Historia.findById(req.params.id).populate({
+    path: 'capitulos',
+    populate: {
+      path: 'comentarios',
+      populate: { path: 'autor', select: 'nome' }
+    }
+  }).populate('id_autor');
     if (!historia) {
       return res.status(404).render(origem, {
         title: titulo,
         usuario,
         mensagemErro: 'História não encontrada.'
       });
+    }
+    
+    let historiaCurtida = false;
+
+    if (req.session?.autor?.id) {
+      const interacao = await Interacao.findOne({
+        tipo: 'curtida',
+        autor: req.session.autor.id,
+        referencia: historia._id,
+        tipoReferencia: 'Historia'
+      });
+      historiaCurtida = !!interacao;
     }
 
     res.render('ler_historia',{
@@ -28,7 +52,8 @@ router.get('/:id/ler', async (req, res) => {
       origem,
       titulo,
       usuario,
-      mensagemErro: null
+      capitulo,
+      historiaCurtida
     });
   } catch (err) {
     console.error(err);
@@ -40,30 +65,41 @@ router.get('/:id/ler', async (req, res) => {
 });
 
 // GET /historias/nova-historia
-router.get('/nova-historia', verificarAutenticacao, (req, res) => {
+router.get('/nova-historia', verificarAutenticacao, async (req, res) => {
+  const generos = await Genero.find({ ativo: true }).sort('nome');
   res.render('nova_historia', {
     title: 'Criar Nova História',
-    mensagemErro: null,
+    generos
   });
 });
 
 // Criar nova história (POST /historias/nova-historia)
 router.post('/nova-historia', verificarAutenticacao, upload.single('capa_url'), async (req, res) => {
   try {
-    const { titulo, genero, resumo, capitulos } = req.body;
+    const { titulo, genero, resumo, capitulos, capa_selecionada } = req.body;
 
-    // Convertendo string em array
-    const generosArray = (genero || "")
-      .split(',')
-      .map(g => g.trim())
-      .filter(g => g);
     
+    let generos = [];
+    if (genero) {
+      if (Array.isArray(genero)) {
+        generos = genero.map(str => str.trim()).filter(str => str !== '');
+      } else {
+        const valor = genero.trim();
+        if (valor) generos = [valor];
+      }
+    }
+    
+    // Escolhe a capa com base no que o usuário usou
+    const capaFinal = req.file
+      ? '/uploads/capas/' + req.file.filename
+      : capa_selecionada || '/images/modelos-capas/Modelo_capa_url-01.jpg';
+
     const novaHistoria = new Historia({
       titulo,
-      genero: generosArray,
+      genero: generos,
       resumo,
       id_autor: req.session.autor.id,
-      capa_url: req.file ? '/uploads/capas/' + req.file.filename : '/images/book-cover-default.jpg'
+      capa_url: capaFinal
     });
     await novaHistoria.save();
     console.log('Nova história criada:', novaHistoria);
@@ -131,6 +167,7 @@ router.delete('/:id', verificarAutenticacao, async (req, res) => {
 router.get('/editar/:id', verificarAutenticacao, async (req, res) => {
   try {
     const historia = await Historia.findById(req.params.id).populate('capitulos');
+    const generos = await Genero.find({ ativo: true }).sort('nome');
     if (!historia) {
       return res.status(404).render('404', { mensagem: 'História não encontrada' });
     }
@@ -138,7 +175,7 @@ router.get('/editar/:id', verificarAutenticacao, async (req, res) => {
     res.render('editar_historia', {
       title: 'Editar História',
       historia,
-      mensagemErro: null
+      generos
     });
   } catch (err) {
     console.error(err);
@@ -152,8 +189,17 @@ router.get('/editar/:id', verificarAutenticacao, async (req, res) => {
 // POST /historias/editar/:id
 router.post('/editar/:id', verificarAutenticacao, upload.single('capa_url'), async (req, res) => {
   try {
-    const { titulo, genero, resumo, capitulos_removidos } = req.body;
-    const generosArray = (genero || "").split(',').map(g => g.trim()).filter(Boolean);
+    const { titulo, genero, resumo, capitulos_removidos, capa_selecionada } = req.body;
+    
+    let generos = [];
+    if (genero) {
+      if (Array.isArray(genero)) {
+        generos = genero.map(str => str.trim()).filter(str => str !== '');
+      } else {
+        const valor = genero.trim();
+        if (valor) generos = [valor];
+      }
+    }
 
     // Buscar a história atual
     const historiaExistente = await Historia.findById(req.params.id).populate('capitulos');
@@ -200,16 +246,18 @@ router.post('/editar/:id', verificarAutenticacao, upload.single('capa_url'), asy
       await Capitulo.deleteMany({ _id: { $in: capitulosIds } });
     }
     
-    // Atualiza a capa se uma nova for enviada
-    const capaAtualizada = req.file ? '/uploads/capas/' + req.file.filename : historiaExistente.capa_url;
-
+    // Escolhe a capa com base no que o usuário usou
+    const capaFinal = req.file
+      ? '/uploads/capas/' + req.file.filename
+      : capa_selecionada || historiaExistente.capa_url;
+    
     // Atualiza a história com os novos dados
     historiaExistente.titulo = titulo;
-    historiaExistente.genero = generosArray;
+    historiaExistente.genero = generos;
     historiaExistente.resumo = resumo;
     historiaExistente.capitulos = novosIdsCapitulos;
     historiaExistente.atualizado_em = new Date(Date.now());
-    historiaExistente.capa_url = capaAtualizada;
+    historiaExistente.capa_url = capaFinal;
 
     const historiaAtualizada = await historiaExistente.save();
 
@@ -228,18 +276,69 @@ router.post('/editar/:id', verificarAutenticacao, upload.single('capa_url'), asy
   }
 });
 
-// Atualizar história (PUT /historias/:id)
-router.put('/:id', async (req, res) => {
+// POST /historias/capitulos/:id/comentarios
+router.post('/capitulos/:id/comentarios', verificarAutenticacao, async (req, res) => {
   try {
-    const { titulo, categorias } = req.body;
-    await Historia.findByIdAndUpdate(req.params.id, {
-      titulo,
-      categorias
+    const novoComentario = new Comentario({
+      conteudo: req.body.conteudo,
+      autor: req.session.autor.id,
+      capitulo: req.params.id
     });
-    res.json({ message: 'História atualizada com sucesso!' });
+
+    const comentarioSalvo = await novoComentario.save();
+
+    // Adicionar ao capítulo
+    await Capitulo.findByIdAndUpdate(req.params.id, {
+      $push: { comentarios: comentarioSalvo._id }
+    });
+
+    res.redirect(`back`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao salvar comentário.');
+  }
+});
+
+router.post('/:id/curtir', verificarAutenticacao, async (req, res) => {
+  try {
+    const historiaId = req.params.id;
+    const autorId = req.session.autor.id;
+
+    if (!mongoose.Types.ObjectId.isValid(historiaId)) {
+      req.session.mensagemErro = 'ID de história inválido.';
+      return res.redirect('back');
+    }
+
+    const historia = await Historia.findById(historiaId);
+    if (!historia) {
+      req.session.mensagemErro = 'História não encontrada.';
+      return res.redirect('back');
+    }
+
+    const interacaoExistente = await Interacao.findOne({
+      tipo: 'curtida',
+      autor: autorId,
+      referencia: historia._id,
+      tipoReferencia: 'Historia'
+    });
+
+    if (interacaoExistente) {
+      await Interacao.deleteOne({ _id: interacaoExistente._id });
+    } else {
+      const novaInteracao = new Interacao({
+        tipo: 'curtida',
+        autor: autorId,
+        referencia: historia._id,
+        tipoReferencia: 'Historia'
+      });
+      await novaInteracao.save();
+    }
+
+    res.redirect(`back`);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro ao atualizar história.' });
+    console.error('Erro ao curtir/descurtir:', error);
+    req.session.mensagemErro = 'Erro ao curtir/descurtir a história.';
+    res.status(500).redirect('back');
   }
 });
 
