@@ -6,8 +6,6 @@
 
 ---
 
-## Fins Didáticos
-
 ## Funcionalidades
 
 ### Autores
