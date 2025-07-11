@@ -17,6 +17,7 @@ router.get('/:usuario', async (req, res) => {
     
     let autorLogado = null;
     let autorSeguidores = [];
+    let idsHistoriasCurtidasAutorLogado = [];
 
     if (req.session?.autor?.id) {
       autorLogado = await Autor.findById(req.session.autor.id);
@@ -24,9 +25,17 @@ router.get('/:usuario', async (req, res) => {
         return res.redirect('/profile');
       }
       autorSeguidores = autor.seguidores.map(seg => seg._id.toString());
+      // Buscar interações de curtidas feitas pelo autor logado
+      const interacoesCurtidasAutorLogado = await Interacao.find({
+        tipo: 'curtida',
+        autor: req.session.autor.id,
+        tipoReferencia: 'Historia'
+      });
+      // Extrair apenas os IDs das histórias curtidas
+      idsHistoriasCurtidasAutorLogado = interacoesCurtidasAutorLogado.map(interacao => interacao.referencia.toString());
     }
 
-    // Buscar interações de curtidas feitas pelo autor logado
+    // Buscar interações de curtidas feitas pelo autor
     const interacoesCurtidas = await Interacao.find({
       tipo: 'curtida',
       autor: autor._id,
@@ -44,7 +53,7 @@ router.get('/:usuario', async (req, res) => {
       autor,
       autorLogado,
       autorSeguidores,
-      idsHistoriasCurtidas,
+      idsHistoriasCurtidasAutorLogado,
       historiasCurtidas
     });
 

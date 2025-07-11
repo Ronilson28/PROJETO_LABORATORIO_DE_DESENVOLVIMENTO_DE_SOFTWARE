@@ -16,7 +16,7 @@
                     </form>
                 <% } %>
             </div>
-            <p id="usuario">@<%= autor.usuario %></p>
+            <p id="usuario-autor">@<%= autor.usuario %></p>
         
             <div class="biografia-container">
                 <% if (autor.biografia) { %>
@@ -62,9 +62,11 @@
           <li class="historia-item">
             <div class="historia-container">
                 <% if (autorLogado) { %>
-                    <form action="/historias/<%= historia._id %>/curtir" method="POST" class="form-descurtir">
-                        <button type="submit" class="btn-descurtir <%= historia ? 'curtido' : '' %>" title="<%= historia ? 'Remover de Histórias Curtidas' : 'Adicionar em Histórias Curtidas' %>">
-                            <i class="fas fa-heart"></i>
+                    <form action="/historias/<%= historia._id %>/curtir" method="POST" class="form-curtir-p">
+                        <button type="submit" class="btn-curtir-p <%= historia ? 'curtido' : '' %>"
+                            title="<%= idsHistoriasCurtidasAutorLogado.includes(historia._id.toString()) ? 'Remover de Histórias Curtidas' : 'Adicionar em Histórias Curtidas' %>"
+                        >
+                            <i class="fa<%= idsHistoriasCurtidasAutorLogado.includes(historia._id.toString()) ? 's' : 'r' %> fa-heart"></i>
                         </button>
                     </form>
                 <% } %>
@@ -98,10 +100,10 @@
                         <div class="historia-container">
                             <% if (autorLogado) { %>
                                 <form action="/historias/<%= historia._id %>/curtir" method="POST" class="form-curtir-p"
-                                    title="<%= idsHistoriasCurtidas.includes(historia._id.toString()) ? 'Remover de Histórias Curtidas' : 'Adicionar em Histórias Curtidas' %>"
+                                    title="<%= idsHistoriasCurtidasAutorLogado.includes(historia._id.toString()) ? 'Remover de Histórias Curtidas' : 'Adicionar em Histórias Curtidas' %>"
                                 >
-                                    <button type="submit" class="btn-curtir-p <%= idsHistoriasCurtidas.includes(historia._id.toString()) ? 'curtido' : '' %>">
-                                        <i class="fa<%= idsHistoriasCurtidas.includes(historia._id.toString()) ? 's' : 'r' %> fa-heart"></i>
+                                    <button type="submit" class="btn-curtir-p <%= idsHistoriasCurtidasAutorLogado.includes(historia._id.toString()) ? 'curtido' : '' %>">
+                                        <i class="fa<%= idsHistoriasCurtidasAutorLogado.includes(historia._id.toString()) ? 's' : 'r' %> fa-heart"></i>
                                     </button>
                                 </form>
                             <% } %>

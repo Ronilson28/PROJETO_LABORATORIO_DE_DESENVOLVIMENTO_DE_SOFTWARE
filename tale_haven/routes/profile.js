@@ -5,6 +5,7 @@ const Historia = require('../models/Historia');
 const Interacao = require('../models/Interacao');
 const upload = require('../middlewares/upload');
 const verificarAutenticacao = require('../middlewares/auth');
+const Capitulo = require('../models/Capitulo');
 
 // Rota GET para exibir o perfil do autor
 router.get('/', verificarAutenticacao, async (req, res) => {
@@ -62,7 +63,7 @@ router.get('/editar', verificarAutenticacao, async (req, res) => {
 });
 
 // Rota POST - Processa edição de perfil
-router.post('/editar', verificarAutenticacao, upload.single('fotoPerfil'), async (req, res) => {
+router.post('/editar', verificarAutenticacao, async (req, res) => {
   try {
     const { nome, usuario, biografia, twitter, instagram, facebook, sitePessoal } = req.body;
 
@@ -92,6 +93,25 @@ router.post('/editar', verificarAutenticacao, upload.single('fotoPerfil'), async
     await autor.save();
 
     res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('edit_profile', {
+      title: 'Editar Perfil' + req.session.autor.nome,
+      mensagemErro: 'Erro ao atualizar perfil. Tente novamente.'
+    });
+  }
+});
+
+router.post('/excluir-conta', verificarAutenticacao, upload.single('fotoPerfil'), async (req, res) => {
+  try {
+    const autorId = req.session.autor.id;
+
+    await Autor.findByIdAndDelete(autorId);
+    await Historia.deleteMany({id_autor: autorId});
+    await Comentario.deleteMany({autor: autorId});
+    await Interacao.deleteMany({autor: autorId });
+
+    res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).render('edit_profile', {

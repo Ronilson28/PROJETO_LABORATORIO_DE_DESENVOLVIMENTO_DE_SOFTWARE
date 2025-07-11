@@ -102,7 +102,7 @@ document.addEventListener('mouseout', function (e) {
     }
 });
 
-// Evento para publicar a nova história
+// Evento para editar a história
 document.querySelector('.btn-nova-historia').addEventListener('click', () => {
     const titulo = document.querySelector('input[name="titulo"]').value.trim();
     const genero = document.querySelector('input[name="genero"]').value.trim();

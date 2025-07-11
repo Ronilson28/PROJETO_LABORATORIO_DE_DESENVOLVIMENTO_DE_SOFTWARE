@@ -5,7 +5,7 @@
         <form id="novaHistoriaForm" action="/historias/editar/<%= historia._id %>" method="POST" enctype="multipart/form-data">
             <div class="editar-capa">
                 <div class="capa-contain">
-                    <img id="preview-capa" src="/images/modelos-capas/Modelo_capa_url-01.jpg" alt="Capa da História" title="Capa da História" >
+                    <img id="preview-capa" src= <%= historia.capa_url %> alt="Capa da História" title="Capa da História" >
                 </div>
                 <label id="labelSelecionarCapa" for="capa_url">Escolher capa</label>
                 <input type="file" name="capa_url" id="capa_url" accept="image/*">

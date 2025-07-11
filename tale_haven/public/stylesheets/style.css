@@ -608,7 +608,7 @@ textarea {
   gap: 10px;
 }
 
-.btn-ler-historia, .btn-editar-historia, .btn-excluir-historia {
+.btn-ler-historia, .btn-editar-historia, .btn-excluir-historia, .btn-excluir-conta {
   min-width: 55px;
   min-height: 30px;
   cursor: pointer;
@@ -1214,6 +1214,16 @@ textarea {
 
 .leitura-resumo, .leitura-conteudo {
   margin-top: 2rem;
+}
+
+.capitulo-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.numeracao {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .leitura-resumo h2,

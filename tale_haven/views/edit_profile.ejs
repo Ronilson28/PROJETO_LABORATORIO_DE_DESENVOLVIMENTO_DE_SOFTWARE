@@ -32,9 +32,13 @@
 
             <label for="sitePessoal">Site Pessoal:</label>
             <input type="text" name="sitePessoal" value="<%= autor.redesSociais.sitePessoal %>" placeholder="https://meu-site-pessoal.com/">
-
+            <div class="acoes-editar" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
             <button class="btn-editar" type="submit">Salvar Alterações</button>
+            <!--form action="/profile/excluir-conta" method="POST" onsubmit="return confirmarExclusao()" style="justify-content: center;">
+                <button type="submit" class="btn-excluir-conta" style="padding: 10px;">Excluir Conta</button>
+            </form-->
             <a href="/profile" class="btn-cancelar">Cancelar</a>
+            </div>
         </form>
     </section>
 </main>

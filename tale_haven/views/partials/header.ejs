@@ -12,7 +12,6 @@
 
         <% if (session && session.autor && session.autor.nome) { %>
           <a href="/profile"><%= session.autor.nome.split(' ')[0] %></a>
-          <a href="/configuracao">Configurações</a>
           <a href="/logout">Sair</a>
         <% } else { %>
           <a href="/login">Entrar</a>

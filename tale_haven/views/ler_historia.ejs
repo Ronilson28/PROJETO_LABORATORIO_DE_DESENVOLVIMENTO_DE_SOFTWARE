@@ -26,11 +26,17 @@
     <div class="leitura-conteudo">
       <div class="leitura-capitulos">
         <% historia.capitulos.forEach((cap, index) => { %>
+          <br><br><hr><br><br>
           <div class="capitulo">
-            <h2><%= cap.titulo || ('Capítulo ' + (index + 1)) %></h2>
+            <div class="capitulo-header">
+              <h2><%= cap.titulo || ('Capítulo ' + (index + 1)) %></h2>
+              <span class="numeracao"><%= index+1 %></span>
+            </div>
+            <br>
             <p><%- cap.conteudo.replace(/\n/g, '<br>') %></p>
 
             <!-- Comentários deste capítulo -->
+            <br>
             <div class="comentarios">
               <h3>Comentários</h3>
 
