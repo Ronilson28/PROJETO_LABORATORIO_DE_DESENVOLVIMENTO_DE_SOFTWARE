@@ -1,4 +1,4 @@
-# PROJETO_LABORATORIO_DE_DESENVOLVIMENTO_DE_SOFTWARE
+# PROJETO DE LABORATÓRIO DE DESENVOLVIMENTO DE SOFTWARE
 
 # Tale Haven
 
@@ -132,13 +132,11 @@ npm start
 
 ## Sobre o Projeto
 
-Tale Haven é uma plataforma web desenvolvida durante a disciplina de Laboratório de Desenvolvimento de Software, do curso de Ciência da Computação da Universidade Federal do Oeste do Pará (UFOPA) — Santarém, PA, Brasil.
-O projeto foi realizado no primeiro semestre de 2025, sob orientação da professora Carla Marina Costa Paxiuba, com o objetivo de aplicar os conhecimentos adquiridos ao longo do curso.
-A aplicação tem como foco a publicação de histórias por autores independentes, possibilitando a criação, edição, leitura e interação com obras literárias de forma acessível e dinâmica.
+O Tale Haven é um projeto desenvolvido no contexto da disciplina de Laboratório de Desenvolvimento de Software, do curso de Ciência da Computação da Universidade Federal do Oeste do Pará (UFOPA) — campus Santarém, PA, Brasil.
+Realizado durante o primeiro semestre de 2025, sob a orientação da professora Carla Marina Costa Paxiuba, o projeto teve como propósito a concepção e implementação de um sistema funcional, visando consolidar na prática os conhecimentos adquiridos ao longo do curso.
+No Tale Haven, especialmente, foram aplicados os conhecimentos das áreas de desenvolvimento web, modelagem de dados, programação orientada a objetos, experiência do usuário e engenharia de software.
 
----
-
-## Equipe de Desenvolvimento
+### Equipe de Desenvolvimento
 
 Ronilson Amorim Moreira¹
 Silvestre Bentes Cardoso¹
