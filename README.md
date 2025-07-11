@@ -1,12 +1,14 @@
 # PROJETO_LABORATORIO_DE_DESENVOLVIMENTO_DE_SOFTWARE
 
-# 📚 Tale Haven
+# Tale Haven
 
 **Tale Haven** é uma plataforma voltada para **autores independentes**, permitindo que criem, editem, publiquem e compartilhem suas histórias com leitores apaixonados por literatura. Inspirado em plataformas como *Wattpad* e *Spirit Fanfics*, o projeto oferece recursos pensados especialmente para a comunidade criativa.
 
 ---
 
-## 🚀 Funcionalidades
+## Fins Didáticos
+
+## Funcionalidades
 
 ### Autores
 - Cadastro, login e logout
@@ -104,7 +106,6 @@ tale_haven/
 │   ├── profile.ejs
 │   ├── public_profile.js
 │   └── sign_up.ejs
-├── .env
 ├── app.js
 ├── package-lock.json
 └── package.json
@@ -128,3 +129,21 @@ npm install
 
 # Inicie o servidor
 npm start
+```
+---
+
+## Sobre o Projeto
+
+Tale Haven é uma plataforma web desenvolvida durante a disciplina de Laboratório de Desenvolvimento de Software, do curso de Ciência da Computação da Universidade Federal do Oeste do Pará (UFOPA) — Santarém, PA, Brasil.
+O projeto foi realizado no primeiro semestre de 2025, sob orientação da professora Carla Marina Costa Paxiuba, com o objetivo de aplicar os conhecimentos adquiridos ao longo do curso.
+A aplicação tem como foco a publicação de histórias por autores independentes, possibilitando a criação, edição, leitura e interação com obras literárias de forma acessível e dinâmica.
+
+---
+
+## Equipe de Desenvolvimento
+
+Ronilson Amorim Moreira¹
+Silvestre Bentes Cardoso¹
+Williams Clauber Marinho Santos¹
+
+¹ Curso de Ciência da Computação — UFOPA
